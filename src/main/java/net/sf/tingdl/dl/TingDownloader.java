@@ -189,8 +189,8 @@ public class TingDownloader {
                     }
                 } else {
                     System.out.println(String.format("Book: %s Up to date", book.getArchiveFile(tingPath)));
-                    // Copy over ...
-                    if (job.isTing()) {
+                    // Copy over if not there ...
+                    if (job.isTing() && !job.getBook().getDescriptionFile(tingPath).exists()) {
                         job.copyFromBackup(tingPath);
                         job.setTingUpdated(true);
                     }

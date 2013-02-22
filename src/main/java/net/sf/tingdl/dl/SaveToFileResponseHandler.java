@@ -182,7 +182,7 @@ public class SaveToFileResponseHandler implements ResponseHandler<Integer> {
         final String md5Sum = sb.toString();
         switch (fileType) {
             case ARCHIVE:
-                if (!book.getThumbMD5().equals(md5Sum)) {
+                if (!book.getFileMD5().equals(md5Sum)) {
                     System.err.println(String.format("ERROR MD5 File: %s md5: %s %s length: %d", getBook().getArchiveName(), getBook().getFileMD5(), md5Sum, fileLength));
                     return false;
                 } else {
