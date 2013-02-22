@@ -48,7 +48,7 @@ public class TingDownloader {
     public static String THUMB_PATH_TEMPLATE = "/book-files/get/id/%s/type/thumb/area/%s/sn/%d/";
     public static String ARCHIVE_PATH_TEMPLATE = "/book-files/get/id/%s/area/%s/type/archive/sn/%d/";
     public static String CDFS_PATH_TEMPLATE = "/cdfs.php?action=version&OS=%s&fw=%sd&ting=%s&sn=%d";
-    public static String FW_PATH_TEMPLATE = "/fw.php?action=version&OS=%d&fw=%s&ting=%s&sn=%d";
+    public static String FW_PATH_TEMPLATE = "/fw.php?action=version&OS=%s&fw=%s&ting=%s&sn=%d";
     private HttpClient httpclient;
     private HttpGet httpGet;
     private InetAddress address;
@@ -165,6 +165,7 @@ public class TingDownloader {
                 if (job.updateNeeded(book)) {
                     // UpdateBook
                     job.setBook(book);
+                    fileHandler.setBook(book);
                     fileHandler.setDestinations(job.getDestinationTypes());
                     fileHandler.setFileType(SaveToFileResponseHandler.FileType.ARCHIVE);
 
@@ -197,6 +198,7 @@ public class TingDownloader {
             } catch (HttpResponseException ex) {
                 System.out.println(String.format("Statuscode; %d URI: %s", ex.getStatusCode(), httpGet.getURI().toString()));
             } catch (Exception ex) {
+                ex.printStackTrace();
                 System.err.println(ex);
                 continue;
             }

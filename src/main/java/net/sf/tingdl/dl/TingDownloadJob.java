@@ -133,8 +133,8 @@ public class TingDownloadJob {
         this.book = book;
     }
 
-    boolean updateNeeded(Book book) {
-        return book.updateNeeded(book);
+    boolean updateNeeded(Book b) {
+        return this.book.updateNeeded(b);
     }
 
     /**

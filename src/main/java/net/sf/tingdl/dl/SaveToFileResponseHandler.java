@@ -92,6 +92,20 @@ public class SaveToFileResponseHandler implements ResponseHandler<Integer> {
         this.fileType = fileType;
     }
 
+    /**
+     * @return the book
+     */
+    public Book getBook() {
+        return book;
+    }
+
+    /**
+     * @param book the book to set
+     */
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
     public static enum FileType {
 
         ARCHIVE,
@@ -169,18 +183,18 @@ public class SaveToFileResponseHandler implements ResponseHandler<Integer> {
         switch (fileType) {
             case ARCHIVE:
                 if (!book.getThumbMD5().equals(md5Sum)) {
-                    System.err.println(String.format("ERROR MD5 File: %s md5: %s %s length: %d", book.getArchiveName(), book.getFileMD5(), md5Sum, fileLength));
+                    System.err.println(String.format("ERROR MD5 File: %s md5: %s %s length: %d", getBook().getArchiveName(), getBook().getFileMD5(), md5Sum, fileLength));
                     return false;
                 } else {
-                    System.out.println(String.format("File: %s md5: %s %s length: %d", book.getArchiveName(), book.getFileMD5(), md5Sum, fileLength));
+                    System.out.println(String.format("File: %s md5: %s %s length: %d", getBook().getArchiveName(), getBook().getFileMD5(), md5Sum, fileLength));
                     return true;
                 }
             case THUMB:
                 if (!book.getThumbMD5().equals(md5Sum)) {
-                    System.err.println(String.format("ERROR MD5 File: %s md5: %s %s length: %d", book.getThumName(), book.getThumbMD5(), md5Sum, fileLength));
+                    System.err.println(String.format("ERROR MD5 File: %s md5: %s %s length: %d", getBook().getThumName(), getBook().getThumbMD5(), md5Sum, fileLength));
                     return false;
                 } else {
-                    System.out.println(String.format("File: %s md5: %s %s length: %d", book.getThumName(), book.getThumbMD5(), md5Sum, fileLength));
+                    System.out.println(String.format("File: %s md5: %s %s length: %d", getBook().getThumName(), getBook().getThumbMD5(), md5Sum, fileLength));
                     return true;
                 }
             default:
@@ -194,9 +208,9 @@ public class SaveToFileResponseHandler implements ResponseHandler<Integer> {
     public File getBackupFile() {
         switch (fileType) {
             case ARCHIVE:
-                return book.getArchiveFile(book.getBackupDir());
+                return getBook().getArchiveFile(getBook().getBackupDir());
             case THUMB:
-                return book.getThumbFile(book.getBackupDir());
+                return getBook().getThumbFile(getBook().getBackupDir());
             default:
                 throw new RuntimeException();
         }
@@ -208,9 +222,9 @@ public class SaveToFileResponseHandler implements ResponseHandler<Integer> {
     public File getTingFile() {
         switch (fileType) {
             case ARCHIVE:
-                return book.getArchiveFile(tingPath);
+                return getBook().getArchiveFile(tingPath);
             case THUMB:
-                return book.getThumbFile(tingPath);
+                return getBook().getThumbFile(tingPath);
             default:
                 throw new RuntimeException();
         }
