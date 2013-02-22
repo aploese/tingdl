@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.sf.ting-dl</groupId>
     <artifactId>ting-dl</artifactId>
-    <version>0.8-SNAPSHOT</version>
+    <version>0.8.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 	
     <name>ting-dl</name>
@@ -46,10 +46,10 @@
         <url>http://sourceforge.net/tracker/?group_id=294247&amp;atid=1242940</url>
     </issueManagement>
 
-    <distributionManagement>
-        <!--
+    <!--distributionManagement>
+        <!- -
           The server id here defined must also appear in ~/.m2/settings.xml with username
-        -->
+        - ->
         <repository>
             <id>tingdl.sf.net</id>
             <name>tingdl Repository</name>
@@ -65,7 +65,7 @@
             <name>tingdl Site</name>
             <url>scp://shell.sf.net:/home/project-web/tingdl/htdocs</url>
         </site>
-    </distributionManagement>
+    </distributionManagement-->
 
     <!-- Currently no lists
     < mailingLists>
