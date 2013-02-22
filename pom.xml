@@ -11,7 +11,7 @@
     
     <!-- Developers and Contributors -->
     <organization>
-        <name>fhz4j</name>
+        <name>Arne Plöse</name>
         <url>http://sourceforge.net/projects/tingdl/</url>
     </organization>
     <developers>
@@ -43,7 +43,7 @@
     </licenses>
     <issueManagement>
         <system>Sourceforge</system>
-        <url>http://sourceforge.net/tracker/?group_id=294247&amp;atid=1242940</url>
+        <url>http://sourceforge.net/p/tingdl/tickets/?source=navbar</url>
     </issueManagement>
 
     <distributionManagement>
@@ -79,9 +79,9 @@
     </mailingLists>
     -->
     <scm>
-        <developerConnection>scm:git:ssh://tingdl.git.sourceforge.net/gitroot/tingdl/tingdl</developerConnection>
-        <connection>scm:git://tingdl.git.sourceforge.net/gitroot/tingdl/tingdl</connection>
-        <url>http://tingdl.git.sourceforge.net/git/gitweb-index.cgi</url>
+        <developerConnection>git clone http://git.code.sf.net/p/tingdl/code tingdl-code</developerConnection>
+        <connection>git clone git://git.code.sf.net/p/tingdl/code tingdl-code</connection>
+        <url>http://sourceforge.net/p/tingdl/code/</url>
       <tag>HEAD</tag>
   </scm>
 
