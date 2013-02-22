@@ -136,6 +136,22 @@
                     </archive>
                 </configuration>
             </plugin>
+                            <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>2.4</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>3.2</version>
+                    <configuration>
+                        <generateReports>${site.generateReports}</generateReports>
+                        <port>${site.run.port}</port>
+                        <stagingDirectory>${java.io.tmpdir}/ting-dl</stagingDirectory>
+                    </configuration>
+                </plugin>
+
         </plugins>
     </build>
     
