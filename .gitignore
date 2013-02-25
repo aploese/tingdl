@@ -4,4 +4,7 @@ debian/maven.cleanIgnoreRules
 debian/maven.publishedRules
 debian/stamp-poms-patched
 debian/ting-dl.poms
+debian/ting-dl.debhelper.log
+debian/files
+debian/ting-dl/
 /target/

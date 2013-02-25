@@ -2,9 +2,9 @@ Source: ting-dl
 Section: java
 Priority: optional
 Maintainer: Debian Java Maintainers <pkg-java-maintainers@lists.alioth.debian.org>
-Uploaders: Arne Plöse <aploeseægmx.de>
+Uploaders: Arne Plöse <aploese@gmx.de>
 Build-Depends: debhelper (>= 7), cdbs, default-jdk, maven-debian-helper (>= 1.5)
-Build-Depends-Indep: libhttpclient-java 
+Build-Depends-Indep: libcommons-cli-java, libhttpclient-java, libslf4j-java 
 Standards-Version: 3.9.2
 Vcs-Svn: svn://svn.debian.org/svn/pkg-java/trunk/ting-dl
 Vcs-Browser: http://svn.debian.org/wsvn/pkg-java/trunk/ting-dl
@@ -15,5 +15,5 @@ Architecture: all
 Depends: ${misc:Depends}, ${maven:Depends}
 Recommends: ${maven:OptionalDepends}
 Description: ting-dl
- dsfg
+ Downloader for TING
 

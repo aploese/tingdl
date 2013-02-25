@@ -165,9 +165,9 @@ public class TingDownloadJob {
 
     public boolean copyFromBackup(File tingPath) {
         try {
-            LOG.info("Copy %s from %s to %s\n", book.getArchiveName(), book.getBackupDir(), tingPath);
+            System.out.printf("Copy %s from %s to %s\n", book.getArchiveName(), book.getBackupDir(), tingPath);
             copyFile(book.getArchiveFile(book.getBackupDir()), book.getArchiveFile(tingPath), 8192);
-            LOG.info("Copy %s from %s to %s\n", book.getThumName(), book.getBackupDir(), tingPath);
+            System.out.printf("Copy %s from %s to %s\n", book.getThumName(), book.getBackupDir(), tingPath);
             copyFile(book.getThumbFile(book.getBackupDir()), book.getThumbFile(tingPath), 8192);
             book.writeToFile(tingPath);
             return true;

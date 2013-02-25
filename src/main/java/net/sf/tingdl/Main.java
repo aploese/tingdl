@@ -69,7 +69,6 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        args = new String[] {"-cb"};
         Main app = new Main();
         Job j = app.init(args);
         switch (j) {
