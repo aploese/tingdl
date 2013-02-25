@@ -23,12 +23,14 @@ package net.sf.tingdl.config;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.security.MessageDigest;
 
 /**
  *
@@ -308,7 +310,7 @@ public class Book {
     }
     
     public File getBackupDir() {
-        File f = new File(TingConfig.TING_USER_DIR, String.format("%05d", getId()));
+        File f = new File(TingConfig.getTingConfig().getTingBackupDir(), String.format("%05d", getId()));
         f.mkdir();
         f = new File(f, String.format("%d", getBookVersion()));
         f.mkdir();
@@ -324,5 +326,45 @@ public class Book {
     public boolean updateNeeded(Book b) {
         return getId() != b.getId() ? false : getBookVersion() < b.getBookVersion();
     } 
+    
+    private void checkMd5Internally(File file, String md5Sum) {
+        System.out.printf("Start calc MD5 for %s\n", file);
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] data = new byte[8192];
+            try (FileInputStream fis = new FileInputStream(file)) {
+            int length = 0;
+            while ((length = fis.read(data)) > -1) {
+                    md.update(data, 0, length);
+            }
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+            byte[] dig = md.digest();
+            StringBuilder sb = new StringBuilder();
+            for (byte i : dig) {
+                sb.append(String.format("%02x", i));
+            }
+
+            if (!sb.toString().equals(md5Sum)) {
+                    System.err.printf("ERROR MD5 File: %s md5 expected: %s ,but was: %s\n", file, md5Sum, sb.toString());
+                } else {
+                    System.out.printf("MD5 for file : %s OK.\n", file);
+                }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        
+    }
+
+    public void checkMd5(File path) {
+        if (getFileMD5() != null) {
+            checkMd5Internally(getArchiveFile(path), getFileMD5());
+        }
+        if (getThumbMD5()!= null) {
+            checkMd5Internally(getThumbFile(path), getThumbMD5());
+        }
+        //TODO ScriptMD5 ???
+    }
 
 }

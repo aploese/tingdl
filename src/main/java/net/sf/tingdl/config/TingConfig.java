@@ -27,6 +27,7 @@ import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
@@ -34,10 +35,12 @@ import java.text.DateFormat;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Formatter;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,11 +51,11 @@ import org.slf4j.Marker;
  * @author aploese
  */
 public class TingConfig {
-    
-    private static Logger LOG = LoggerFactory.getLogger(TingConfig.class);
 
-    final static public long NEW_SERIAL_VERSION = Long.parseLong("010000040000", 16);
-    final static File TING_USER_DIR = new File(System.getProperties().getProperty("user.home"), ".ting");
+    private final static TingConfig tingConfig = new TingConfig();
+    private final static Logger LOG = LoggerFactory.getLogger(TingConfig.class);
+    private final static long NEW_SERIAL_VERSION = Long.parseLong("010000040000", 16);
+    private File tingBackupDir;
     private File tingDir;
     private String alternativeServer = "alternative.ting.eu";
     private String area = "en";
@@ -81,7 +84,7 @@ public class TingConfig {
     private String startview = "maxi";
     private int statePause;
     private String sw;
-    private String tbd = "verbose"; 
+    private String tbd = "verbose";
     private boolean testpen;
     private String type = "LIGHT";
     private int volume = 6;
@@ -90,14 +93,12 @@ public class TingConfig {
     private int windowposy = 134;
     private int windowwidth = 1151;
 
-    static {
-        if (!TING_USER_DIR.exists()) {
-            TING_USER_DIR.mkdirs();
-        }
-
+    private TingConfig() {
+        super();
     }
 
-    public TingConfig() {
+    public static TingConfig getTingConfig() {
+        return tingConfig;
     }
 
     public boolean findMountedTing() {
@@ -111,12 +112,12 @@ public class TingConfig {
                 String[] mountData = line.split(" ");
                 if (mountData[1].endsWith("Ting")) {
                     File tingMountDir = new File(mountData[1]);
-                    tingDir = new File(tingMountDir, "$ting");
-                    if (tingDir.exists() && tingDir.isDirectory()) {
-                        System.out.printf("$ting found at %s\n", tingDir);
+                    setTingDir(new File(tingMountDir, "$ting"));
+                    if (getTingDir().exists() && getTingDir().isDirectory()) {
+                        System.out.printf("$ting found at %s\n", getTingDir());
                         return true;
                     } else {
-                        tingDir = null;
+                        setTingDir(null);
                         return false;
                     }
                 }
@@ -128,7 +129,7 @@ public class TingConfig {
 
     public void readSettings() {
         File tingSettings;
-        File[] f = tingDir.listFiles(new FileFilter() {
+        File[] f = getTingDir().listFiles(new FileFilter() {
             @Override
             public boolean accept(File pathname) {
                 return ("SETTINGS.INI".equals(pathname.getName()));
@@ -766,7 +767,7 @@ public class TingConfig {
 
     public Collection<Integer> readTbdFile() throws IOException {
         List<Integer> result;
-        try (FileReader fr = new FileReader(new File(tingDir, "TBD.TXT"));
+        try (FileReader fr = new FileReader(new File(getTingDir(), "TBD.TXT"));
                 BufferedReader br = new BufferedReader(fr)) {
             result = new ArrayList();
             String line;
@@ -778,7 +779,7 @@ public class TingConfig {
     }
 
     public void writeTbdFile(Collection<Integer> entries) throws IOException {
-        try (FileWriter fw = new FileWriter(new File(tingDir, "TBD.TXT"));
+        try (FileWriter fw = new FileWriter(new File(getTingDir(), "TBD.TXT"));
                 BufferedWriter bw = new BufferedWriter(fw)) {
             boolean firstTime = true;
             for (Integer enty : entries) {
@@ -794,40 +795,102 @@ public class TingConfig {
 
     public Collection<Book> getLatestBooksFromBackup() {
         List<Book> result = new ArrayList();
+        Pattern bookIdPattern = Pattern.compile("\\d\\d\\d\\d\\d");
+        Pattern bookVersionPattern = Pattern.compile("\\d\\d\\d");
 
-        File[] bookDirs = TING_USER_DIR.listFiles(new FileFilter() {
-            Pattern p = Pattern.compile("\\d\\d\\d\\d\\d");
+        for (File bookDir : tingBackupDir.listFiles()) {
+            if (bookDir.isDirectory() && bookIdPattern.matcher(bookDir.getName()).matches()) {
 
-            @Override
-            public boolean accept(File pathname) {
-                return pathname.isDirectory() && p.matcher(pathname.getName()).matches();
-            }
-        });
-        for (File bookDir : bookDirs) {
-            File[] versionDirs = bookDir.listFiles(new FileFilter() {
-                Pattern p = Pattern.compile("\\d\\d\\d");
-
-                @Override
-                public boolean accept(File pathname) {
-                    return pathname.isDirectory() && p.matcher(pathname.getName()).matches();
-                }
-            });
-            Book maxVer = null;
-            for (File versionDir : versionDirs) {
-                if (maxVer == null ? true : maxVer.getBookVersion() < Integer.parseInt(versionDir.getName())) {
-                    try {
-                        maxVer = new Book(new File(versionDir, String.format("%s_%s.txt", bookDir.getName(), getArea())));
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
+                Book maxVer = null;
+                for (File versionDir : bookDir.listFiles()) {
+                    if (versionDir.isDirectory() && bookVersionPattern.matcher(versionDir.getName()).matches()) {
+                        if (maxVer == null ? true : maxVer.getBookVersion() < Integer.parseInt(versionDir.getName())) {
+                            try {
+                                maxVer = new Book(new File(versionDir, String.format("%s_%s.txt", bookDir.getName(), getArea())));
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
                     }
                 }
+                if (maxVer != null) {
+                    result.add(maxVer);
+                }
             }
-            result.add(maxVer);
         }
         return result;
     }
 
     public void clearTbdFile() throws IOException {
         writeTbdFile(new ArrayList<Integer>());
+    }
+
+    /**
+     * @param tingDir the tingDir to set
+     */
+    public void setTingDir(File tingDir) {
+        this.tingDir = tingDir;
+    }
+
+    /**
+     * @return the tingBackupDir
+     */
+    public File getTingBackupDir() {
+        return tingBackupDir;
+    }
+
+    /**
+     * @param tingBackupDir the tingBackupDir to set
+     */
+    public void setTingBackupDir(File tingBackupDir) {
+        this.tingBackupDir = tingBackupDir;
+        if (!this.tingBackupDir.exists()) {
+            this.tingBackupDir.mkdirs();
+        }
+    }
+
+    public boolean isBackup() {
+        return tingBackupDir != null;
+    }
+
+    public Collection<Book> getInstalledBooksOnTing() {
+        File[] files = tingDir.listFiles();
+        if (files == null) {
+            return Collections.EMPTY_LIST;
+        }
+        final Pattern p = Pattern.compile(String.format("\\d\\d\\d\\d\\d_%s.txt", getTingConfig().getArea()));
+        Collection<Book> result = new ArrayList(files.length);
+        for (File f : files) {
+            if (p.matcher(f.getName()).matches()) {
+                try {
+                    result.add(new Book(f));
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        }
+        return result;
+    }
+
+    public Collection<Book> getAllBooksInBackup() {
+        List<Book> result = new ArrayList();
+        Pattern bookIdPattern = Pattern.compile("\\d\\d\\d\\d\\d");
+        Pattern bookVersionPattern = Pattern.compile("\\d\\d\\d");
+
+        for (File bookDir : tingBackupDir.listFiles()) {
+            if (bookDir.isDirectory() && bookIdPattern.matcher(bookDir.getName()).matches()) {
+
+                for (File versionDir : bookDir.listFiles()) {
+                    if (versionDir.isDirectory() && bookVersionPattern.matcher(versionDir.getName()).matches()) {
+                        try {
+                            result.add(new Book(new File(versionDir, String.format("%s_%s.txt", bookDir.getName(), getArea()))));
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }
+            }
+        }
+        return result;
     }
 }
