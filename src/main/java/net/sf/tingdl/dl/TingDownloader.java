@@ -35,12 +35,16 @@ import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author aploese
  */
 public class TingDownloader {
+
+    private static Logger LOG = LoggerFactory.getLogger(TingDownloader.class);
 
     public static String BUSY_PATH = "/public/server-busy/";
     public static String ADD_SN_PATH_TEMPLATE = "/%%d/public/add-sn/start_sn/%d/fw_version/%s/ting_version/%s/";
@@ -104,7 +108,7 @@ public class TingDownloader {
 
                     try {
                         if ("BUSY".equals(httpclient.execute(httpGet, responseHandler))) {
-                            System.out.println(String.format("ting @%s is busy", addr.toString()));
+                            LOG.info(String.format("ting @{0} is busy", addr.toString()));
                         } else {
                             return address;
                         }
@@ -187,8 +191,9 @@ public class TingDownloader {
                         book.writeToFile(tingPath);
                         job.setTingUpdated(true);
                     }
+                    System.out.printf("Book: %s updated\n", book.getArchiveFile(tingPath));
                 } else {
-                    System.out.println(String.format("Book: %s Up to date", book.getArchiveFile(tingPath)));
+                    System.out.printf("Book: %s up to date\n", book.getArchiveFile(tingPath));
                     // Copy over if not there ...
                     if (job.isTing() && !job.getBook().getDescriptionFile(tingPath).exists()) {
                         job.copyFromBackup(tingPath);
@@ -196,10 +201,9 @@ public class TingDownloader {
                     }
                 }
             } catch (HttpResponseException ex) {
-                System.out.println(String.format("Statuscode; %d URI: %s", ex.getStatusCode(), httpGet.getURI().toString()));
+                LOG.error("Statuscode; {0} URI: {1}", ex.getStatusCode(), httpGet.getURI().toString());
             } catch (Exception ex) {
-                ex.printStackTrace();
-                System.err.println(ex);
+                LOG.error("HTTP error", ex);
                 continue;
             }
         }

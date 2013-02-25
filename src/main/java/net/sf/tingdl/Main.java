@@ -61,13 +61,13 @@ public class Main {
     }
 
     private void updateBooks() {
-        List<Book> booksToDownload = new ArrayList();
         Map<Integer, Book> booksToUpdateOnTing = new HashMap();
         Collection<Integer> tbdBooks;
         try {
             tbdBooks = tingConfig.readTbdFile();
             for (Integer i : tbdBooks) {
                 booksToUpdateOnTing.put(i, new Book(i, tingConfig.getArea()));
+                System.out.printf("New book on TING: %d\n", i);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -86,6 +86,7 @@ public class Main {
             try {
                 Book b = new Book(bookTxtFile);
                 booksToUpdateOnTing.put(b.getId(), b);
+                System.out.printf("Found book on TING: %d version: %d\n", b.getId(), b.getBookVersion());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -94,6 +95,7 @@ public class Main {
 
         List<TingDownloadJob> jobs = new ArrayList();
         for (Book b : latestBooksInBackupDir) {
+            System.out.printf("Found book in backup: %d version: %d\n", b.getId(), b.getBookVersion());
             TingDownloadJob job = new TingDownloadJob();
             job.setBackup(true);
             job.setBook(b);

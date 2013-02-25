@@ -99,6 +99,7 @@ public class Book {
     private String uRL;
     private String thumbMD5;
     private String fileMD5;
+    private String scriptMD5;
     private String bookAreaCode;
 
     public Book(int id, String lang) {
@@ -153,6 +154,9 @@ public class Book {
             bw.write("FileMD5: ");
             bw.write(fileMD5);
             bw.newLine();
+            bw.write("ScriptMD5: ");
+            bw.write(scriptMD5);
+            bw.newLine();
             bw.write("Book Area Code: ");
             bw.write(bookAreaCode);
         }
@@ -168,6 +172,7 @@ public class Book {
         sb.append("URL: ").append(uRL).append("\n");
         sb.append("ThumbMD5: ").append(thumbMD5).append("\n");
         sb.append("FileMD5: ").append(fileMD5).append("\n");
+        sb.append("ScriptMD5: ").append(scriptMD5).append("\n");
         sb.append("Book Area Code: ").append(bookAreaCode);
         return sb.toString();
     }

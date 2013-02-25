@@ -1,2 +1,7 @@
 nbactions.xml
+debian/maven-repo/
+debian/maven.cleanIgnoreRules
+debian/maven.publishedRules
+debian/stamp-poms-patched
+debian/ting-dl.poms
 /target/

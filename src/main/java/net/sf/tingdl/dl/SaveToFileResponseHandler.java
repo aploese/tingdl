@@ -34,6 +34,8 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -41,7 +43,9 @@ import org.apache.http.util.EntityUtils;
  */
 public class SaveToFileResponseHandler implements ResponseHandler<Integer> {
 
-    private Object isTing() {
+   private static Logger LOG = LoggerFactory.getLogger(SaveToFileResponseHandler.class);
+
+   private Object isTing() {
         return destinations.contains(DestinationType.TING);
     }
 
@@ -132,6 +136,7 @@ public class SaveToFileResponseHandler implements ResponseHandler<Integer> {
      * response was unsuccessful (>= 300 status code), throws an
      * {@link HttpResponseException}.
      */
+   @Override
     public Integer handleResponse(final HttpResponse response)
             throws HttpResponseException, IOException {
         md.reset();
@@ -183,18 +188,18 @@ public class SaveToFileResponseHandler implements ResponseHandler<Integer> {
         switch (fileType) {
             case ARCHIVE:
                 if (!book.getFileMD5().equals(md5Sum)) {
-                    System.err.println(String.format("ERROR MD5 File: %s md5: %s %s length: %d", getBook().getArchiveName(), getBook().getFileMD5(), md5Sum, fileLength));
+                    System.err.printf("ERROR MD5 File: %s md5: %s %s length: %d\n", getBook().getArchiveName(), getBook().getFileMD5(), md5Sum, fileLength);
                     return false;
                 } else {
-                    System.out.println(String.format("File: %s md5: %s %s length: %d", getBook().getArchiveName(), getBook().getFileMD5(), md5Sum, fileLength));
+                    System.out.printf("File: %s md5: %s %s length: %d\n", getBook().getArchiveName(), getBook().getFileMD5(), md5Sum, fileLength);
                     return true;
                 }
             case THUMB:
                 if (!book.getThumbMD5().equals(md5Sum)) {
-                    System.err.println(String.format("ERROR MD5 File: %s md5: %s %s length: %d", getBook().getThumName(), getBook().getThumbMD5(), md5Sum, fileLength));
+                    System.err.printf("ERROR MD5 File: %s md5: %s %s length: %d\n", getBook().getThumName(), getBook().getThumbMD5(), md5Sum, fileLength);
                     return false;
                 } else {
-                    System.out.println(String.format("File: %s md5: %s %s length: %d", getBook().getThumName(), getBook().getThumbMD5(), md5Sum, fileLength));
+                    System.out.printf("File: %s md5: %s %s length: %d\n", getBook().getThumName(), getBook().getThumbMD5(), md5Sum, fileLength);
                     return true;
                 }
             default:

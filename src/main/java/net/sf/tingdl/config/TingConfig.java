@@ -31,18 +31,25 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.text.DateFormat;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Formatter;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Marker;
 
 /**
  *
  * @author aploese
  */
 public class TingConfig {
+    
+    private static Logger LOG = LoggerFactory.getLogger(TingConfig.class);
 
     final static public long NEW_SERIAL_VERSION = Long.parseLong("010000040000", 16);
     final static File TING_USER_DIR = new File(System.getProperties().getProperty("user.home"), ".ting");
@@ -106,6 +113,7 @@ public class TingConfig {
                     File tingMountDir = new File(mountData[1]);
                     tingDir = new File(tingMountDir, "$ting");
                     if (tingDir.exists() && tingDir.isDirectory()) {
+                        System.out.printf("$ting found at %s\n", tingDir);
                         return true;
                     } else {
                         tingDir = null;
@@ -221,7 +229,7 @@ public class TingConfig {
                             serial <<= 8;
                             serial |= Integer.parseInt(ser[i], 16);
                         }
-                        System.out.println("SER: " + serial);
+                        System.out.printf("Found serial number: %d\n", serial);
                     case "server":
                         server = prop[1];
                         break;

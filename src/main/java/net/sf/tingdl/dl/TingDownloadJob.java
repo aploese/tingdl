@@ -28,6 +28,8 @@ import java.io.InputStream;
 import java.util.EnumSet;
 import java.util.Set;
 import net.sf.tingdl.config.Book;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -35,6 +37,7 @@ import net.sf.tingdl.config.Book;
  */
 public class TingDownloadJob {
 
+    private static Logger LOG = LoggerFactory.getLogger(TingDownloadJob.class);
     private Book book;
     private Set<DestinationType> destinationTypes = EnumSet.noneOf(DestinationType.class);
     private Set<DestinationType> destinationUpdated = EnumSet.noneOf(DestinationType.class);
@@ -162,9 +165,9 @@ public class TingDownloadJob {
 
     public boolean copyFromBackup(File tingPath) {
         try {
-            System.out.printf("Copy %s from %s to %s\n", book.getArchiveName(), book.getBackupDir(), tingPath );
+            LOG.info("Copy %s from %s to %s\n", book.getArchiveName(), book.getBackupDir(), tingPath);
             copyFile(book.getArchiveFile(book.getBackupDir()), book.getArchiveFile(tingPath), 8192);
-            System.out.printf("Copy %s from %s to %s\n", book.getThumName(), book.getBackupDir(), tingPath );
+            LOG.info("Copy %s from %s to %s\n", book.getThumName(), book.getBackupDir(), tingPath);
             copyFile(book.getThumbFile(book.getBackupDir()), book.getThumbFile(tingPath), 8192);
             book.writeToFile(tingPath);
             return true;
