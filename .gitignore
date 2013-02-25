@@ -5,6 +5,7 @@ debian/maven.publishedRules
 debian/stamp-poms-patched
 debian/ting-dl.poms
 debian/ting-dl.debhelper.log
+debian/ting-dl.substvars
 debian/files
 debian/ting-dl/
 /target/
