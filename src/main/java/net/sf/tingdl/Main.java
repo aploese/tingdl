@@ -50,6 +50,17 @@ import org.apache.commons.cli.PosixParser;
  */
 public class Main {
 
+    private void cleanTingDir() {
+        File configDir = getTingConfig().getTingDir();
+        new File(configDir, "1.DAT").delete();
+        new File(configDir, "2.DAT").delete();
+        new File(configDir, "3.DAT").delete();
+        new File(configDir, "4.DAT").delete();
+        new File(configDir, "SETTING.DAT").delete();
+        new File(configDir, "TMP.INI").delete();
+        new File(configDir, "BOOKS.SYS").delete();
+    }
+
     private enum Job {
 
         NOTHING,
@@ -74,6 +85,12 @@ public class Main {
 
         Main app = new Main();
         Job j = app.init(args);
+        app.cleanTingDir();
+        // Ceck Serial Number update if needed
+        if (app.getTingConfig().isUninitializedSerialVersion()) {
+            app.updateSerialNumber();
+        }
+
         switch (j) {
             case NOTHING:
                 break;
@@ -94,7 +111,7 @@ public class Main {
                 app.checkVersions();
                 break;
         }
-        // TODO write SETTINGS.INI
+        app.getTingConfig().writeSettings();
         app.syncFs();
 
     }
@@ -178,6 +195,14 @@ public class Main {
         return Job.DLOWNLOAD;
     }
 
+    private void updateSerialNumber() {
+        // get serverIP which can handle the request
+        InetAddress server = tingDownloader.getServerIp(getTingConfig().getServer());
+        getTingConfig().setSerial(tingDownloader.addSerialNumber(getTingConfig().getSerial(), getTingConfig().getFw(), getTingConfig().getSw()));
+        System.out.println("New Serialnumber: " + getTingConfig().getSerial());
+        return;
+    }
+
     private void updateBooks() {
         Map<Integer, Book> booksToUpdateOnTing = new HashMap();
         Collection<Integer> tbdBooks;
@@ -216,7 +241,11 @@ public class Main {
         // add books not already in backup
         for (Book tb : booksToUpdateOnTing.values()) {
             TingDownloadJob job = new TingDownloadJob();
-            job.setBackup(true);
+            if (getTingConfig().getTingBackupDir() != null) {
+                job.setBackup(true);
+            } else {
+                job.setBackup(false);
+            }
             job.setTing(true);
             job.setBook(tb);
             jobs.add(job);
@@ -225,13 +254,8 @@ public class Main {
 
         // get serverIP which can handle the request
         InetAddress server = tingDownloader.getServerIp(getTingConfig().getServer());
-        //SerialNumber registration, if needed
-        if (getTingConfig().isUninitializedSerialVersion()) {
-            getTingConfig().setSerial(tingDownloader.addSerialNumber(getTingConfig().getSerial(), getTingConfig().getFw(), getTingConfig().getSw()));
-        } else {
-            tingDownloader.setSerialNumber(getTingConfig().getSerial());
-        }
 
+        tingDownloader.setSerialNumber(getTingConfig().getSerial());
         tingDownloader.downloadBooks(jobs, getTingConfig().getTingDir());
 
         try {

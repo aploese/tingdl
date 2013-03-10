@@ -25,26 +25,26 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.text.DateFormat;
-import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Formatter;
 import java.util.List;
 import java.util.Locale;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.Marker;
 
 /**
  *
@@ -52,9 +52,17 @@ import org.slf4j.Marker;
  */
 public class TingConfig {
 
+    public enum PenType {
+
+        STANDARD, // smart
+        LIGHT; // classic
+    }
+    private final static DateFormat SETTINGS_DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
+    private final static Charset SETTINGS_CHARSET = Charset.forName("UTF-16BE");
     private final static TingConfig tingConfig = new TingConfig();
     private final static Logger LOG = LoggerFactory.getLogger(TingConfig.class);
     private final static long NEW_SERIAL_VERSION = Long.parseLong("010000040000", 16);
+    private final static long EMPTY_SERIAL_VERSION = Long.parseLong("000000000000", 16);
     private File tingBackupDir;
     private File tingDir;
     private String alternativeServer = "alternative.ting.eu";
@@ -78,7 +86,7 @@ public class TingConfig {
     private int playlist;
     private int position;
     private boolean registration;
-    private long serial = NEW_SERIAL_VERSION;
+    private long serial = EMPTY_SERIAL_VERSION;
     private String server = "system.ting.eu";
     private boolean showallfiles = true;
     private String startview = "maxi";
@@ -86,7 +94,7 @@ public class TingConfig {
     private String sw;
     private String tbd = "verbose";
     private boolean testpen;
-    private String type = "LIGHT";
+    private PenType type = PenType.LIGHT;
     private int volume = 6;
     private int windowheight = 537;
     private int windowposx = 11;
@@ -128,23 +136,10 @@ public class TingConfig {
     }
 
     public void readSettings() {
-        File tingSettings;
-        File[] f = getTingDir().listFiles(new FileFilter() {
-            @Override
-            public boolean accept(File pathname) {
-                return ("SETTINGS.INI".equals(pathname.getName()));
-            }
-        });
-        if (f.length == 1) {
-            tingSettings = f[0];
-        } else {
-            tingSettings = null;
-        }
-
-        try (FileInputStream fis = new FileInputStream(tingSettings);
-                InputStreamReader isr = new InputStreamReader(fis, Charset.forName("UTF16"));
+        File tingSettings = new File(getTingDir(), "SETTINGS.INI");
+        try (InputStream is = new FileInputStream(tingSettings);
+                InputStreamReader isr = new InputStreamReader(is, SETTINGS_CHARSET);
                 BufferedReader br = new BufferedReader(isr)) {
-            DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, Locale.GERMAN);
             String line;
             while ((line = br.readLine()) != null) {
                 String[] prop = line.split("=");
@@ -169,7 +164,7 @@ public class TingConfig {
                         break;
                     case "cdfs":
                         try {
-                            cdfs = df.parse(prop[1]);
+                            cdfs = SETTINGS_DATE_FORMAT.parse(prop[1]);
                         } catch (Exception e) {
                             throw new RuntimeException(e);
                         }
@@ -182,7 +177,7 @@ public class TingConfig {
                         break;
                     case "fscheck":
                         try {
-                            fscheck = df.parse(prop[1]);
+                            fscheck = SETTINGS_DATE_FORMAT.parse(prop[1]);
                         } catch (Exception e) {
                             throw new RuntimeException(e);
                         }
@@ -224,12 +219,7 @@ public class TingConfig {
                         registration = "yes".equals(prop[1]);
                         break;
                     case "serial":
-                        String[] ser = prop[1].split(":");
-                        serial = 0;
-                        for (int i = 0; i < ser.length; i++) {
-                            serial <<= 8;
-                            serial |= Integer.parseInt(ser[i], 16);
-                        }
+                        serial = parseSerialNumber(prop[1]);
                         System.out.printf("Found serial number: %d\n", serial);
                     case "server":
                         server = prop[1];
@@ -245,6 +235,9 @@ public class TingConfig {
                         break;
                     case "sw":
                         sw = prop[1];
+                        if (sw.equals("0\uffa1")) { // buggy fw on ting smart ...
+                            sw = "0.0.1.965";
+                        }
                         break;
                     case "tbd":
                         tbd = prop[1];
@@ -253,7 +246,7 @@ public class TingConfig {
                         testpen = "yes".equals(prop[1]);
                         break;
                     case "type":
-                        type = prop[1];
+                        type = PenType.valueOf(prop[1]);
                         break;
                     case "volume":
                         volume = Integer.parseInt(prop[1]);
@@ -405,7 +398,7 @@ public class TingConfig {
     }
 
     public boolean isUninitializedSerialVersion() {
-        return NEW_SERIAL_VERSION == serial;
+        return (NEW_SERIAL_VERSION == serial) | (EMPTY_SERIAL_VERSION == serial);
     }
 
     /**
@@ -684,14 +677,14 @@ public class TingConfig {
     /**
      * @return the type
      */
-    public String getType() {
+    public PenType getType() {
         return type;
     }
 
     /**
      * @param type the type to set
      */
-    public void setType(String type) {
+    public void setType(PenType type) {
         this.type = type;
     }
 
@@ -892,5 +885,134 @@ public class TingConfig {
             }
         }
         return result;
+    }
+
+    public static long parseSerialNumber(String serial) {
+        String[] ser = serial.split(":");
+        long result = 0;
+        for (int i = 0; i < ser.length; i++) {
+            result <<= 8;
+            result |= Long.parseLong(ser[i], 16);
+        }
+        return result;
+    }
+
+    public static String formatSerialNumber(long serial) {
+        return String.format("%02x:%02x:%02x:%02x:%02x:%02x", (serial >> 40) & 0xFF, (serial >> 32) & 0xFF, (serial >> 24) & 0xFF, (serial >> 16) & 0xFF, (serial >> 8) & 0xFF, serial & 0xFF);
+    }
+
+    public void writeSettings() {
+        File tingSettings = new File(getTingDir(), "SETTINGS.INI");
+        try (OutputStream os = new FileOutputStream(tingSettings);
+                OutputStreamWriter osw = new OutputStreamWriter(os, SETTINGS_CHARSET);
+                BufferedWriter bw = new BufferedWriter(osw)) {
+            String line;
+            bw.write("alternative_server=");
+            bw.write(alternativeServer);
+            bw.write("\n");
+            bw.write("area=");
+            bw.write(area);
+            bw.write("\n");
+            bw.write("automaticdownload=");
+            bw.write(automaticdownload ? "yes" : "no");
+            bw.write("\n");
+            bw.write("autooff=");
+            bw.write(autooff ? "1" : "0");
+            bw.write("\n");
+            bw.write("book=");
+            bw.write(String.format("%05d", book));
+            bw.write("\n");
+            bw.write("cdfs=");
+            bw.write(SETTINGS_DATE_FORMAT.format(cdfs));
+            bw.write("\n");
+            bw.write("codec=");
+            bw.write(codec);
+            bw.write("\n");
+            bw.write("firsttime=");
+            bw.write(firsttime ? "yes" : "no");
+            bw.write("\n");
+            bw.write("fscheck=");
+            bw.write(SETTINGS_DATE_FORMAT.format(fscheck));
+            bw.write("\n");
+            bw.write("fullscreen=");
+            bw.write(fullscreen ? "yes" : "no");
+            bw.write("\n");
+            bw.write("fw=");
+            bw.write(fw);
+            bw.write("\n");
+            bw.write("hidemp3panel=");
+            bw.write(hidemp3panel ? "yes" : "no");
+            bw.write("\n");
+            bw.write("index=");
+            bw.write(Integer.toString(index));
+            bw.write("\n");
+            bw.write("language=");
+            bw.write(Integer.toString(language));
+            bw.write("\n");
+            bw.write("maxvolume=");
+            bw.write(Integer.toString(maxvolume));
+            bw.write("\n");
+            bw.write("mode=");
+            bw.write(mode);
+            bw.write("\n");
+            bw.write("mp3=");
+            bw.write(mp3 == null ? "null" : "mp3");
+            bw.write("\n");
+            bw.write("oufpos=");
+            bw.write(Integer.toString(oufpos));
+            bw.write("\n");
+            bw.write("playlist=");
+            bw.write(Integer.toString(playlist));
+            bw.write("\n");
+            bw.write("position=");
+            bw.write(Integer.toString(position));
+            bw.write("\n");
+            bw.write("registration=");
+            bw.write(registration ? "yes" : "no");
+            bw.write("\n");
+            bw.write("serial=");
+            bw.write(formatSerialNumber(serial));
+            bw.write("\n");
+            bw.write("server=");
+            bw.write(server);
+            bw.write("\n");
+            bw.write("showallfiles=");
+            bw.write(showallfiles ? "yes" : "no");
+            bw.write("\n");
+            bw.write("startview=");
+            bw.write(startview);
+            bw.write("\n");
+            bw.write("state_pause=");
+            bw.write(Integer.toString(statePause));
+            bw.write("\n");
+            bw.write("sw=");
+            bw.write(sw);
+            bw.write("\n");
+            bw.write("tbd=");
+            bw.write(tbd);
+            bw.write("\n");
+            bw.write("testpen=");
+            bw.write(testpen ? "yes" : "no");
+            bw.write("\n");
+            bw.write("type=");
+            bw.write(type.name());
+            bw.write("\n");
+            bw.write("volume=");
+            bw.write(Integer.toString(volume));
+            bw.write("\n");
+            bw.write("windowheight=");
+            bw.write(Integer.toString(windowheight));
+            bw.write("\n");
+            bw.write("windowposx=");
+            bw.write(Integer.toString(windowposx));
+            bw.write("\n");
+            bw.write("windowposy=");
+            bw.write(Integer.toString(windowposy));
+            bw.write("\n");
+            bw.write("windowwidth=");
+            bw.write(Integer.toString(windowwidth));
+            bw.write("\n");
+        } catch (IOException ex) {
+        }
     }
 }

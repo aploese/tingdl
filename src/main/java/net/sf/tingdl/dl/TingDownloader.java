@@ -47,7 +47,7 @@ public class TingDownloader {
     private static Logger LOG = LoggerFactory.getLogger(TingDownloader.class);
 
     public static String BUSY_PATH = "/public/server-busy/";
-    public static String ADD_SN_PATH_TEMPLATE = "/%%d/public/add-sn/start_sn/%d/fw_version/%s/ting_version/%s/";
+    public static String ADD_SN_PATH_TEMPLATE = "/public/add-sn/start_sn/%d/fw_version/%s/ting_version/%s/";
     public static String DESCRIPTION_PATH_TEMPLATE = "/book-files/get-description/id/%d/area/%s/sn/%d/";
     public static String THUMB_PATH_TEMPLATE = "/book-files/get/id/%s/type/thumb/area/%s/sn/%d/";
     public static String ARCHIVE_PATH_TEMPLATE = "/book-files/get/id/%s/area/%s/type/archive/sn/%d/";
@@ -84,7 +84,7 @@ public class TingDownloader {
     }
 
     private URI buildUriAddSn(long sn, String fwVersion, String tingVersion) {
-        return buildURI(ADD_SN_PATH_TEMPLATE, sn, fwVersion, tingVersion.split(".")[3]);
+        return buildURI(ADD_SN_PATH_TEMPLATE, sn, fwVersion, tingVersion.split("\\.")[3]);
     }
 
     private URI buildURI(String pathTemplate, Object... pathArgs) {
@@ -134,7 +134,7 @@ public class TingDownloader {
         httpGet.setURI(buildUriAddSn(sn, fwVersion, tingVersion));
         ResponseHandler<String> responseHandler = new BasicResponseHandler();
         try {
-            serialNumber = Integer.parseInt(httpclient.execute(httpGet, responseHandler));
+            serialNumber = Long.parseLong(httpclient.execute(httpGet, responseHandler));
             return serialNumber;
         } catch (IOException ex) {
             throw new RuntimeException(ex);

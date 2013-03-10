@@ -153,7 +153,7 @@ public class SaveToFileResponseHandler implements ResponseHandler<Integer> {
             FileOutputStream ost = isTing() != null ? new FileOutputStream(getTingFile()) : null;
             FileOutputStream osb = isBackup() != null ? new FileOutputStream(getBackupFile()) : null;
             try {
-                int length = 0;
+                int length;
                 while ((length = is.read(data)) > -1) {
                     md.update(data, 0, length);
                     if (ost != null) {
