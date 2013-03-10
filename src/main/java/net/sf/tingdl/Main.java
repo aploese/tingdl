@@ -20,8 +20,10 @@
  */
 package net.sf.tingdl;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -58,6 +60,7 @@ public class Main {
         CHECK_VERSIONS;
     }
     private static final String CMDL_OPT_HELP = "help";
+    private static final String CMDL_OPT_VERSION = "version";
     private static final String CMDL_OPT_ENABLE_BACKUP = "enable-backup";
     private static final String CMDL_OPT_BACKUP_DIR = "backup-dir";
     private static final String CMDL_OPT_TING_DIR = "ting-dir";
@@ -91,6 +94,27 @@ public class Main {
                 app.checkVersions();
                 break;
         }
+        // TODO write SETTINGS.INI
+        app.syncFs();
+
+    }
+
+    private void syncFs() {
+        try {
+            Process p = Runtime.getRuntime().exec("sync");
+            p.waitFor();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String line;
+            while (null != (line = reader.readLine())) {
+                System.out.println(line);
+            }
+        } catch (IOException | InterruptedException e) {
+            System.err.print("Exception at syncing fs:" + e);
+            e.printStackTrace();
+        }
+
+        System.out.println("Done syncing filesystem!");
+
     }
 
     private TingConfig getTingConfig() {
@@ -99,6 +123,12 @@ public class Main {
 
     private Job init(String[] args) throws ParseException {
         Options opts = buildCmdlOptions();
+        Properties appProps = new Properties();
+        try {
+            appProps.load(Main.class.getResourceAsStream("app.properties"));
+        } catch (IOException ex) {
+            throw new RuntimeException("Cant read prop file", ex);
+        }
 
         CommandLineParser cmdParser = new PosixParser();
         CommandLine cml = cmdParser.parse(opts, args);
@@ -107,6 +137,10 @@ public class Main {
             return Job.NOTHING;
         }
 
+        if (cml.hasOption(CMDL_OPT_VERSION)) {
+            System.out.println(appProps.getProperty("version"));
+            return Job.NOTHING;
+        }
 
         if (cml.hasOption(CMDL_OPT_TING_DIR)) {
             getTingConfig().setTingDir(new File(cml.getOptionValue(CMDL_OPT_TING_DIR)));
@@ -233,9 +267,10 @@ public class Main {
         opt = new Option("h", CMDL_OPT_HELP, false, "print this help message");
         options.addOption(opt);
 
-        opt = new Option("e", CMDL_OPT_ENABLE_BACKUP, true, "enable the use of backup dir");
-        opt.setArgName(CMDL_OPT_ENABLE_BACKUP);
-        opt.setType(String.class);
+        opt = new Option("v", CMDL_OPT_VERSION, false, "print version");
+        options.addOption(opt);
+
+        opt = new Option("e", CMDL_OPT_ENABLE_BACKUP, false, "enable the use of backup dir");
         options.addOption(opt);
 
         opt = new Option("b", CMDL_OPT_BACKUP_DIR, true, "backup dir to use");
@@ -251,19 +286,15 @@ public class Main {
         optg = new OptionGroup();
 
         opt = new Option("ca", CMDL_OPT_CHECK_ALL, false, "check all files (exists and md5) then exit");
-        opt.setArgName(CMDL_OPT_CHECK_ALL);
         optg.addOption(opt);
 
         opt = new Option("ct", CMDL_OPT_CHECK_TING, false, "check ting (exists and md5) then exit");
-        opt.setArgName(CMDL_OPT_CHECK_TING);
         optg.addOption(opt);
 
         opt = new Option("cb", CMDL_OPT_CHECK_BACKUP, false, "check backup (exists and md5) then exit");
-        opt.setArgName(CMDL_OPT_CHECK_BACKUP);
         optg.addOption(opt);
 
         opt = new Option("u", CMDL_OPT_CHECK_VERSIONS, true, "check ting versions and exit");
-        opt.setArgName(CMDL_OPT_CHECK_VERSIONS);
         optg.addOption(opt);
 
         options.addOptionGroup(optg);

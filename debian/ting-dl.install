@@ -1,2 +1,2 @@
-debian/ting-dl.1 usr/share/maven/man/
+debian/ting-dl.1.gz usr/share/man/man1/
 debian/ting-dl.sh /usr/bin/

@@ -108,7 +108,7 @@ public class TingDownloader {
 
                     try {
                         if ("BUSY".equals(httpclient.execute(httpGet, responseHandler))) {
-                            LOG.info(String.format("ting @{0} is busy", addr.toString()));
+                            System.out.printf("ting @%s is busy", addr.toString());
                         } else {
                             return address;
                         }

@@ -83,11 +83,14 @@ public class Book {
                     case "FileMD5":
                         fileMD5 = pair.length == 1 ? "" : pair[1];
                         break;
+                    case "ScriptMD5":
+                        scriptMD5 = pair.length == 1 ? "" : pair[1];
+                        break;
                     case "Book Area Code":
                         bookAreaCode = pair.length == 1 ? "" : pair[1];
                         break;
                     default:
-                        throw new RuntimeException("Unknown key: " + line);
+                        throw new RuntimeException(String.format("Unknown key: \"%s\" in book: %d", line, id));
                 }
             }
         }
@@ -112,15 +115,15 @@ public class Book {
     public String getThumName() {
         return String.format("%05d_%s.png", id, lang);
     }
-    
+
     public File getThumbFile(File parent) {
         return new File(parent, getThumName());
     }
-    
+
     public String getArchiveName() {
         return String.format("%05d_%s.ouf", id, lang);
     }
-    
+
     public File getArchiveFile(File parent) {
         return new File(parent, getArchiveName());
     }
@@ -128,7 +131,7 @@ public class Book {
     public String getDescriptionName() {
         return String.format("%05d_%s.txt", id, lang);
     }
-    
+
     public File getDescriptionFile(File parent) {
         return new File(parent, getDescriptionName());
     }
@@ -156,9 +159,11 @@ public class Book {
             bw.write("FileMD5: ");
             bw.write(fileMD5);
             bw.newLine();
-            bw.write("ScriptMD5: ");
-            bw.write(scriptMD5);
-            bw.newLine();
+            if (scriptMD5 != null) {
+                bw.write("ScriptMD5: ");
+                bw.write(scriptMD5);
+                bw.newLine();
+            }
             bw.write("Book Area Code: ");
             bw.write(bookAreaCode);
         }
@@ -174,7 +179,9 @@ public class Book {
         sb.append("URL: ").append(uRL).append("\n");
         sb.append("ThumbMD5: ").append(thumbMD5).append("\n");
         sb.append("FileMD5: ").append(fileMD5).append("\n");
-        sb.append("ScriptMD5: ").append(scriptMD5).append("\n");
+        if (scriptMD5 != null) {
+            sb.append("ScriptMD5: ").append(scriptMD5).append("\n");
+        }
         sb.append("Book Area Code: ").append(bookAreaCode);
         return sb.toString();
     }
@@ -308,7 +315,7 @@ public class Book {
     public boolean descriptionFileExists(File path) {
         return getDescriptionFile(path).exists();
     }
-    
+
     public File getBackupDir() {
         File f = new File(TingConfig.getTingConfig().getTingBackupDir(), String.format("%05d", getId()));
         f.mkdir();
@@ -316,27 +323,27 @@ public class Book {
         f.mkdir();
         return f;
     }
-    
+
     /**
      * Check if the given book is more recent ant this book must be updated.
-     * 
+     *
      * @param b the book to compare
      * @return wheter the book b has a higher version
      */
     public boolean updateNeeded(Book b) {
         return getId() != b.getId() ? false : getBookVersion() < b.getBookVersion();
-    } 
-    
+    }
+
     private void checkMd5Internally(File file, String md5Sum) {
         System.out.printf("Start calc MD5 for %s\n", file);
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
             byte[] data = new byte[8192];
             try (FileInputStream fis = new FileInputStream(file)) {
-            int length = 0;
-            while ((length = fis.read(data)) > -1) {
+                int length = 0;
+                while ((length = fis.read(data)) > -1) {
                     md.update(data, 0, length);
-            }
+                }
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -347,24 +354,23 @@ public class Book {
             }
 
             if (!sb.toString().equals(md5Sum)) {
-                    System.err.printf("ERROR MD5 File: %s md5 expected: %s ,but was: %s\n", file, md5Sum, sb.toString());
-                } else {
-                    System.out.printf("MD5 for file : %s OK.\n", file);
-                }
+                System.err.printf("ERROR MD5 File: %s md5 expected: %s ,but was: %s\n", file, md5Sum, sb.toString());
+            } else {
+                System.out.printf("MD5 for file : %s OK.\n", file);
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        
+
     }
 
     public void checkMd5(File path) {
         if (getFileMD5() != null) {
             checkMd5Internally(getArchiveFile(path), getFileMD5());
         }
-        if (getThumbMD5()!= null) {
+        if (getThumbMD5() != null) {
             checkMd5Internally(getThumbFile(path), getThumbMD5());
         }
         //TODO ScriptMD5 ???
     }
-
 }
