@@ -45,11 +45,11 @@ public class SaveToFileResponseHandler implements ResponseHandler<Integer> {
 
    private static Logger LOG = LoggerFactory.getLogger(SaveToFileResponseHandler.class);
 
-   private Object isTing() {
+   private boolean isTing() {
         return destinations.contains(DestinationType.TING);
     }
 
-    private Object isBackup() {
+    private boolean isBackup() {
         return destinations.contains(DestinationType.BACKUP);
     }
 
@@ -150,8 +150,8 @@ public class SaveToFileResponseHandler implements ResponseHandler<Integer> {
         try (InputStream is = entity.getContent()) {
             byte[] data = new byte[8192];
 
-            FileOutputStream ost = isTing() != null ? new FileOutputStream(getTingFile()) : null;
-            FileOutputStream osb = isBackup() != null ? new FileOutputStream(getBackupFile()) : null;
+            FileOutputStream ost = isTing() ? new FileOutputStream(getTingFile()) : null;
+            FileOutputStream osb = isBackup() ? new FileOutputStream(getBackupFile()) : null;
             try {
                 int length;
                 while ((length = is.read(data)) > -1) {
