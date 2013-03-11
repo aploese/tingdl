@@ -52,6 +52,13 @@ import org.slf4j.LoggerFactory;
  */
 public class TingConfig {
 
+    /**
+     * @return the tingDevice
+     */
+    public File getTingDevice() {
+        return tingDevice;
+    }
+
     public enum PenType {
 
         STANDARD, // smart
@@ -61,10 +68,10 @@ public class TingConfig {
     private final static Charset SETTINGS_CHARSET = Charset.forName("UTF-16BE");
     private final static TingConfig tingConfig = new TingConfig();
     private final static Logger LOG = LoggerFactory.getLogger(TingConfig.class);
-    private final static long NEW_SERIAL_VERSION = Long.parseLong("010000040000", 16);
-    private final static long EMPTY_SERIAL_VERSION = Long.parseLong("000000000000", 16);
+    private final static long EMPTY_SERIAL_VERSION = 0L;
     private File tingBackupDir;
     private File tingDir;
+    private File tingDevice;
     private String alternativeServer = "alternative.ting.eu";
     private String area = "en";
     private boolean automaticdownload = true;
@@ -122,6 +129,7 @@ public class TingConfig {
                     File tingMountDir = new File(mountData[1]);
                     setTingDir(new File(tingMountDir, "$ting"));
                     if (getTingDir().exists() && getTingDir().isDirectory()) {
+                        tingDevice = new File(mountData[0]);
                         System.out.printf("$ting found at %s\n", getTingDir());
                         return true;
                     } else {
@@ -398,7 +406,7 @@ public class TingConfig {
     }
 
     public boolean isUninitializedSerialVersion() {
-        return (NEW_SERIAL_VERSION == serial) | (EMPTY_SERIAL_VERSION == serial);
+        return (EMPTY_SERIAL_VERSION == serial);
     }
 
     /**

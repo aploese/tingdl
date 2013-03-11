@@ -51,14 +51,39 @@ import org.apache.commons.cli.PosixParser;
 public class Main {
 
     private void cleanTingDir() {
-        File configDir = getTingConfig().getTingDir();
-        new File(configDir, "1.DAT").delete();
-        new File(configDir, "2.DAT").delete();
-        new File(configDir, "3.DAT").delete();
-        new File(configDir, "4.DAT").delete();
-        new File(configDir, "SETTING.DAT").delete();
-        new File(configDir, "TMP.INI").delete();
-        new File(configDir, "BOOKS.SYS").delete();
+        getTingConfig().findMountedTing();
+        File tingDevice = getTingConfig().getTingDevice();
+        if (tingDevice != null) {
+            // just unmount
+            executeCommand("umount", tingDevice.getAbsolutePath());
+        } else {
+            // find the Ting pen by its label
+            tingDevice = new File("/dev/disk/by-label/Ting");
+            if (!tingDevice.exists()) {
+                throw new RuntimeException("Can't find Ting pen");
+            }
+            try {
+                // get the link target (something like /dev/sdX)
+                tingDevice = tingDevice.getCanonicalFile();
+            } catch (IOException ex) {
+                throw new RuntimeException("Cant find ting pen by its label");
+            }
+            System.out.println("Found unmounted Ting: " + tingDevice.getAbsolutePath());
+        }
+        //TODO Debian USB deveces have permision root.floppy => Ubuntu root.disk - so fsck will not work under Ubuntu 12.10 ...
+        executeCommand("/sbin/dosfsck",  "-Vva", tingDevice.getAbsolutePath());
+        executeCommand("gvfs-mount", "-d", tingDevice.getAbsolutePath());
+        //TODO we need gvfs which is from gnome to mount it again ???
+        getTingConfig().findMountedTing();
+        
+        final File tingDir = getTingConfig().getTingDir();
+        new File(tingDir, "1.DAT").delete();
+        new File(tingDir, "2.DAT").delete();
+        new File(tingDir, "3.DAT").delete();
+        new File(tingDir, "4.DAT").delete();
+        new File(tingDir, "SETTING.DAT").delete();
+        new File(tingDir, "TMP.INI").delete();
+        new File(tingDir, "BOOKS.SYS").delete();
     }
 
     private enum Job {
@@ -116,20 +141,28 @@ public class Main {
 
     }
 
-    private void syncFs() {
+    private void executeCommand(String ... cmdArray) {
         try {
-            Process p = Runtime.getRuntime().exec("sync");
+            Process p = Runtime.getRuntime().exec(cmdArray);
             p.waitFor();
             BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
             String line;
             while (null != (line = reader.readLine())) {
                 System.out.println(line);
             }
+            reader = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+            while (null != (line = reader.readLine())) {
+                System.err.println(line);
+            }
+            
         } catch (IOException | InterruptedException e) {
             System.err.print("Exception at syncing fs:" + e);
             e.printStackTrace();
         }
-
+    }
+    
+    private void syncFs() {
+        executeCommand("sync");
         System.out.println("Done syncing filesystem!");
 
     }
