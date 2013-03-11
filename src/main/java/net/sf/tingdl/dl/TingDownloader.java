@@ -47,12 +47,12 @@ public class TingDownloader {
     private static Logger LOG = LoggerFactory.getLogger(TingDownloader.class);
 
     public static String BUSY_PATH = "/public/server-busy/";
-    public static String ADD_SN_PATH_TEMPLATE = "/public/add-sn/start_sn/%d/fw_version/%s/ting_version/%s/";
+    public static String ADD_SN_PATH_TEMPLATE = "/public/add-sn/start_sn/%d/fw_version/%s/ting_version/%d/";
     public static String DESCRIPTION_PATH_TEMPLATE = "/book-files/get-description/id/%d/area/%s/sn/%d/";
     public static String THUMB_PATH_TEMPLATE = "/book-files/get/id/%s/type/thumb/area/%s/sn/%d/";
     public static String ARCHIVE_PATH_TEMPLATE = "/book-files/get/id/%s/area/%s/type/archive/sn/%d/";
-    public static String CDFS_PATH_TEMPLATE = "/cdfs.php?action=version&OS=%s&fw=%sd&ting=%s&sn=%d";
-    public static String FW_PATH_TEMPLATE = "/fw.php?action=version&OS=%s&fw=%s&ting=%s&sn=%d";
+    public static String CDFS_PATH_TEMPLATE = "/cdfs.php?action=version&OS=%s&fw=%sd&ting=%d&sn=%d";
+    public static String FW_PATH_TEMPLATE = "/fw.php?action=version&OS=%s&fw=%s&ting=%d&sn=%d";
     private HttpClient httpclient;
     private HttpGet httpGet;
     private InetAddress address;
@@ -63,11 +63,11 @@ public class TingDownloader {
         httpGet = new HttpGet();
     }
 
-    private URI buildUriCdfs(String os, String fwVersion, String tingVersion) {
+    private URI buildUriCdfs(String os, String fwVersion, int tingVersion) {
         return buildURI(CDFS_PATH_TEMPLATE, os, fwVersion, tingVersion, serialNumber);
     }
 
-    private URI buildUriFw(String os, String fwVersion, String tingVersion) {
+    private URI buildUriFw(String os, String fwVersion, int tingVersion) {
         return buildURI(FW_PATH_TEMPLATE, os, fwVersion, tingVersion, serialNumber);
     }
 
@@ -83,8 +83,8 @@ public class TingDownloader {
         return buildURI(DESCRIPTION_PATH_TEMPLATE, b.getId(), b.getLang(), serialNumber);
     }
 
-    private URI buildUriAddSn(long sn, String fwVersion, String tingVersion) {
-        return buildURI(ADD_SN_PATH_TEMPLATE, sn, fwVersion, tingVersion.split("\\.")[3]);
+    private URI buildUriAddSn(long sn, String fwVersion, int tingVersion) {
+        return buildURI(ADD_SN_PATH_TEMPLATE, sn, fwVersion, tingVersion);
     }
 
     private URI buildURI(String pathTemplate, Object... pathArgs) {
@@ -130,7 +130,7 @@ public class TingDownloader {
         return addresses[0];
     }
 
-    public long addSerialNumber(long sn, String fwVersion, String tingVersion) {
+    public long addSerialNumber(long sn, String fwVersion, int tingVersion) {
         httpGet.setURI(buildUriAddSn(sn, fwVersion, tingVersion));
         ResponseHandler<String> responseHandler = new BasicResponseHandler();
         try {
@@ -209,7 +209,7 @@ public class TingDownloader {
         }
     }
 
-    public Properties checkCdfsVersion(String os, String fwVersion, String tingVersion) throws IOException {
+    public Properties checkCdfsVersion(String os, String fwVersion, int tingVersion) throws IOException {
         httpGet.setURI(buildUriCdfs(os, fwVersion, tingVersion));
         VersionCheckResponseHandler versionCheckResponseHandler = new VersionCheckResponseHandler();
         return httpclient.execute(httpGet, versionCheckResponseHandler);
@@ -233,7 +233,7 @@ public class TingDownloader {
          */
     }
 
-    public Properties checkFwVersion(String os, String fwVersion, String tingVersion) throws IOException {
+    public Properties checkFwVersion(String os, String fwVersion, int tingVersion) throws IOException {
         httpGet.setURI(buildUriFw(os, fwVersion, tingVersion));
         VersionCheckResponseHandler versionCheckResponseHandler = new VersionCheckResponseHandler();
         return httpclient.execute(httpGet, versionCheckResponseHandler);

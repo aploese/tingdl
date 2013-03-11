@@ -231,7 +231,7 @@ public class Main {
     private void updateSerialNumber() {
         // get serverIP which can handle the request
         InetAddress server = tingDownloader.getServerIp(getTingConfig().getServer());
-        getTingConfig().setSerial(tingDownloader.addSerialNumber(getTingConfig().getSerial(), getTingConfig().getFw(), getTingConfig().getSw()));
+        getTingConfig().setSerial(tingDownloader.addSerialNumber(getTingConfig().getSerial(), getTingConfig().getFw(), getTingConfig().getSw3()));
         System.out.println("New Serialnumber: " + getTingConfig().getSerial());
         return;
     }
@@ -300,11 +300,11 @@ public class Main {
     }
 
     private void checkVersions() throws IOException {
-        Properties verionCheckProps = tingDownloader.checkCdfsVersion("win", getTingConfig().getFw(), getTingConfig().getSw());
+        Properties verionCheckProps = tingDownloader.checkCdfsVersion("win", getTingConfig().getFw(), getTingConfig().getSw3());
         if (!verionCheckProps.isEmpty()) {
             System.err.printf("New Ting CDFS\n");
         }
-        verionCheckProps = tingDownloader.checkFwVersion("win", getTingConfig().getFw(), getTingConfig().getSw());
+        verionCheckProps = tingDownloader.checkFwVersion("win", getTingConfig().getFw(), getTingConfig().getSw3());
         if (!verionCheckProps.isEmpty()) {
             System.err.printf("New Ting Firmware\n");
         }

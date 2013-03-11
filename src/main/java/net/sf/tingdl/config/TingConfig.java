@@ -23,7 +23,6 @@ package net.sf.tingdl.config;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -41,7 +40,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,11 +57,68 @@ public class TingConfig {
         return tingDevice;
     }
 
+    /**
+     * @return the sw0
+     */
+    public int getSw0() {
+        return sw0;
+    }
+
+    /**
+     * @param sw0 the sw0 to set
+     */
+    public void setSw0(int sw0) {
+        this.sw0 = sw0;
+    }
+
+    /**
+     * @return the sw1
+     */
+    public int getSw1() {
+        return sw1;
+    }
+
+    /**
+     * @param sw1 the sw1 to set
+     */
+    public void setSw1(int sw1) {
+        this.sw1 = sw1;
+    }
+
+    /**
+     * @return the sw2
+     */
+    public int getSw2() {
+        return sw2;
+    }
+
+    /**
+     * @param sw2 the sw2 to set
+     */
+    public void setSw2(int sw2) {
+        this.sw2 = sw2;
+    }
+
+    /**
+     * @return the sw3
+     */
+    public int getSw3() {
+        return sw3;
+    }
+
+    /**
+     * @param sw3 the sw3 to set
+     */
+    public void setSw3(int sw3) {
+        this.sw3 = sw3;
+    }
+
     public enum PenType {
 
         STANDARD, // smart
         LIGHT; // classic
     }
+    
     private final static DateFormat SETTINGS_DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
     private final static Charset SETTINGS_CHARSET = Charset.forName("UTF-16BE");
     private final static TingConfig tingConfig = new TingConfig();
@@ -98,7 +153,10 @@ public class TingConfig {
     private boolean showallfiles = true;
     private String startview = "maxi";
     private int statePause;
-    private String sw;
+    private int sw0;
+    private int sw1;
+    private int sw2;
+    private int sw3;
     private String tbd = "verbose";
     private boolean testpen;
     private PenType type = PenType.LIGHT;
@@ -242,9 +300,25 @@ public class TingConfig {
                         statePause = Integer.parseInt(prop[1]);
                         break;
                     case "sw":
-                        sw = prop[1];
+                        String sw = prop[1];
                         if (sw.equals("0\uffa1")) { // buggy fw on ting smart ...
-                            sw = "0.0.1.965";
+                            System.err.printf("Found wrong sw: %s \n", sw);
+                            sw0 = 0;
+                            sw1= 0;
+                            sw2 = 1;
+                            sw3 = 965;
+                        } else {
+                            int start = 0;
+                            int end = sw.indexOf('.');
+                            sw0 = Integer.parseInt(sw.substring(start, end));
+                            start = end + 1;
+                            end = sw.indexOf('.', start);
+                            sw1 = Integer.parseInt(sw.substring(start, end));
+                            start = end + 1;
+                            end = sw.indexOf('.', start);
+                            sw2 = Integer.parseInt(sw.substring(start, end));
+                            start = end + 1;
+                            sw3 = Integer.parseInt(sw.substring(start));
                         }
                         break;
                     case "tbd":
@@ -641,20 +715,6 @@ public class TingConfig {
     }
 
     /**
-     * @return the sw
-     */
-    public String getSw() {
-        return sw;
-    }
-
-    /**
-     * @param sw the sw to set
-     */
-    public void setSw(String sw) {
-        this.sw = sw;
-    }
-
-    /**
      * @return the tbd
      */
     public String getTbd() {
@@ -994,7 +1054,13 @@ public class TingConfig {
             bw.write(Integer.toString(statePause));
             bw.write("\n");
             bw.write("sw=");
-            bw.write(sw);
+            bw.write(Integer.toString(sw0));
+            bw.write('.');
+            bw.write(Integer.toString(sw1));
+            bw.write('.');
+            bw.write(Integer.toString(sw2));
+            bw.write('.');
+            bw.write(Integer.toString(sw3));
             bw.write("\n");
             bw.write("tbd=");
             bw.write(tbd);
