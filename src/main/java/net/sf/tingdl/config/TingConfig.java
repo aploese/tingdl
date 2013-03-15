@@ -870,7 +870,10 @@ public class TingConfig {
                     if (versionDir.isDirectory() && bookVersionPattern.matcher(versionDir.getName()).matches()) {
                         if (maxVer == null ? true : maxVer.getBookVersion() < Integer.parseInt(versionDir.getName())) {
                             try {
-                                maxVer = new Book(new File(versionDir, String.format("%s_%s.txt", bookDir.getName(), getArea())));
+                                File newVer = new File(versionDir, String.format("%s_%s.txt", bookDir.getName(), getArea()));
+                                if (newVer.exists()) {
+                                    maxVer = new Book(newVer);
+                                }
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }
