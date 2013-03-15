@@ -111,6 +111,10 @@ public class SaveToFileResponseHandler implements ResponseHandler<Long> {
     }
          
  private void updateProgress() {
+    final int width = 50; // progress bar width in chars
+    final int progressPercentage = (int)(fileLength * 100 / expectedFileLength);
+    final int drawPercent = (int)((double)fileLength / expectedFileLength * width );
+
     final double flDouble = fileLength;
     final double flKB = flDouble / 8/ 1024;
     final double flMB = flKB / 1024;
@@ -120,23 +124,19 @@ public class SaveToFileResponseHandler implements ResponseHandler<Long> {
     final long eta_s = eta % 60;
     final long eta_m = (eta / 60) % 60;
     final long eta_h = eta / 3600;
-    
-     int progressPercentage = (int)Math.round((double)fileLength / expectedFileLength * 100);
-    
-    final int width = 50; // progress bar width in chars
-    final int drawPercent = (int)((double)progressPercentage * width / 100);
 
-    System.out.printf("\r%02d%% [", progressPercentage);
-    
-    for (int i = 0; i <= (drawPercent); i++) {
-      System.out.print("=");
+    StringBuilder sb = new StringBuilder(128);
+    sb.append(String.format("\r%3d [", progressPercentage));
+    for (int i = 0; i < drawPercent; i++ ) {
+        sb.append('=');
     }
-      System.out.print(">");
-    for (int i = drawPercent; i < width; i++) {
-      System.out.print(" ");
+    sb.append('>');
+    for (int i = drawPercent; i < width ; i++ ) {
+        sb.append(' ');
     }
-    System.out.printf("] %.2f MB\t %.2fK/s\t ETA %d:%02d:%02d", flMB, kB_s , eta_h, eta_m, eta_s);
     
+    sb.append(String.format("] %.2f MB\t %.2fK/s\t ETA %d:%02d:%02d", flMB, kB_s , eta_h, eta_m, eta_s));
+    System.out.print(sb);
   }
 
   public static enum FileType {
@@ -180,6 +180,7 @@ public class SaveToFileResponseHandler implements ResponseHandler<Long> {
         }
         expectedFileLength = entity.getContentLength();
         startSysTime = System.currentTimeMillis();
+        fileLength = 0;
         
         try (InputStream is = entity.getContent()) {
             byte[] data = new byte[8192];
@@ -206,10 +207,14 @@ public class SaveToFileResponseHandler implements ResponseHandler<Long> {
                     osb.close();
                 }
             } catch (Exception ex) {
+                // Newline to close Progress
+                System.out.println('\n');
                 // What to do??
                 throw new RuntimeException(ex);
             }
         }
+        // Newline to close Progress
+        System.out.println('\n');
         return fileLength;
     }
 
@@ -223,18 +228,18 @@ public class SaveToFileResponseHandler implements ResponseHandler<Long> {
         switch (fileType) {
             case ARCHIVE:
                 if (!book.getFileMD5().equals(md5Sum)) {
-                    System.err.printf("ERROR MD5 File: %s md5: %s %s length: %d\n", getBook().getArchiveName(), getBook().getFileMD5(), md5Sum, fileLength);
+                    System.err.printf("ERROR MD5 File: %s md5: %s %s length: %d bytes\n", getBook().getArchiveName(), getBook().getFileMD5(), md5Sum, fileLength);
                     return false;
                 } else {
-                    System.out.printf("File: %s md5: %s %s length: %d\n", getBook().getArchiveName(), getBook().getFileMD5(), md5Sum, fileLength);
+                    System.out.printf("File: %s md5: %s %s length: %d bytes\n", getBook().getArchiveName(), getBook().getFileMD5(), md5Sum, fileLength);
                     return true;
                 }
             case THUMB:
                 if (!book.getThumbMD5().equals(md5Sum)) {
-                    System.err.printf("ERROR MD5 File: %s md5: %s %s length: %d\n", getBook().getThumName(), getBook().getThumbMD5(), md5Sum, fileLength);
+                    System.err.printf("ERROR MD5 File: %s md5: %s %s length: %d bytes\n", getBook().getThumName(), getBook().getThumbMD5(), md5Sum, fileLength);
                     return false;
                 } else {
-                    System.out.printf("File: %s md5: %s %s length: %d\n", getBook().getThumName(), getBook().getThumbMD5(), md5Sum, fileLength);
+                    System.out.printf("File: %s md5: %s %s length: %d bytes\n", getBook().getThumName(), getBook().getThumbMD5(), md5Sum, fileLength);
                     return true;
                 }
             default:
