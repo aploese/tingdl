@@ -174,14 +174,15 @@ public class TingDownloader {
                     fileHandler.setFileType(SaveToFileResponseHandler.FileType.ARCHIVE);
 
                     httpGet.setURI(buildUriArchive(book));
-                    System.out.printf("Start download book:\n\n%s\n\nFrom %s\n", book, httpGet.getURI());
-                    long length = httpclient.execute(httpGet, fileHandler);
+                    System.out.printf("Start download book:\n\n%s\n\narchive from %s\n", book, httpGet.getURI());
+                    httpclient.execute(httpGet, fileHandler);
                     fileHandler.checkMd5Sum();
 
                     fileHandler.setFileType(SaveToFileResponseHandler.FileType.THUMB);
                     httpGet.setURI(buildUriThumb(book));
 
-                    length = httpclient.execute(httpGet, fileHandler);
+                    System.out.printf("\nthumb from %s\n", httpGet.getURI());
+                    httpclient.execute(httpGet, fileHandler);
                     fileHandler.checkMd5Sum();
 
                     if (job.isBackup()) {

@@ -44,6 +44,9 @@ import org.slf4j.LoggerFactory;
 public class SaveToFileResponseHandler implements ResponseHandler<Long> {
 
    private static Logger LOG = LoggerFactory.getLogger(SaveToFileResponseHandler.class);
+   
+   private final static double BYTE_TO_MB = 1d / 8 / 1024 / 1024;
+   private final static double BYTE_TO_KB = 1d / 8 / 1024;
 
    private boolean isTing() {
         return destinations.contains(DestinationType.TING);
@@ -115,18 +118,17 @@ public class SaveToFileResponseHandler implements ResponseHandler<Long> {
     final int progressPercentage = (int)(fileLength * 100 / expectedFileLength);
     final int drawPercent = (int)((double)fileLength / expectedFileLength * width );
 
-    final double flDouble = fileLength;
-    final double flKB = flDouble / 8/ 1024;
-    final double flMB = flKB / 1024;
+    final double flKB = BYTE_TO_KB * fileLength;
+    final double flMB = BYTE_TO_MB * fileLength;
     final double runTime = (double)(System.currentTimeMillis() - startSysTime) / 1000;
     final double kB_s = flKB / runTime;
-    final long eta = Math.round(((double)expectedFileLength - fileLength) / 8 / 1024 / kB_s); 
+    final long eta = Math.round(BYTE_TO_KB * (expectedFileLength - fileLength) / kB_s); 
     final long eta_s = eta % 60;
     final long eta_m = (eta / 60) % 60;
     final long eta_h = eta / 3600;
 
     StringBuilder sb = new StringBuilder(128);
-    sb.append(String.format("\r%3d [", progressPercentage));
+    sb.append(String.format("\r%3d%% [", progressPercentage));
     for (int i = 0; i < drawPercent; i++ ) {
         sb.append('=');
     }
@@ -135,7 +137,7 @@ public class SaveToFileResponseHandler implements ResponseHandler<Long> {
         sb.append(' ');
     }
     
-    sb.append(String.format("] %.2f MB\t %.2fK/s\t ETA %d:%02d:%02d", flMB, kB_s , eta_h, eta_m, eta_s));
+    sb.append(String.format("] %.3f MB\t %.2fK/s\t ETA %d:%02d:%02d", flMB, kB_s , eta_h, eta_m, eta_s));
     System.out.print(sb);
   }
 
@@ -181,6 +183,16 @@ public class SaveToFileResponseHandler implements ResponseHandler<Long> {
         expectedFileLength = entity.getContentLength();
         startSysTime = System.currentTimeMillis();
         fileLength = 0;
+        switch (fileType) {
+            case ARCHIVE:
+                    System.out.printf("Save file: %s length: %.3fMB\n", getBook().getArchiveName(), BYTE_TO_MB * expectedFileLength );
+                    break;
+            case THUMB:
+                    System.out.printf("Save file: %s length: %.3fMB\n", getBook().getThumName(), BYTE_TO_MB * expectedFileLength);
+                    break;
+            default:
+                throw new RuntimeException();
+        }
         
         try (InputStream is = entity.getContent()) {
             byte[] data = new byte[8192];
