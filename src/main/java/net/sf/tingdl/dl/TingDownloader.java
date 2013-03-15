@@ -174,7 +174,8 @@ public class TingDownloader {
                     fileHandler.setFileType(SaveToFileResponseHandler.FileType.ARCHIVE);
 
                     httpGet.setURI(buildUriArchive(book));
-                    int length = httpclient.execute(httpGet, fileHandler);
+                    System.out.printf("Start download book:\n\n%s\n\nFrom %s\n", book, httpGet.getURI());
+                    long length = httpclient.execute(httpGet, fileHandler);
                     fileHandler.checkMd5Sum();
 
                     fileHandler.setFileType(SaveToFileResponseHandler.FileType.THUMB);

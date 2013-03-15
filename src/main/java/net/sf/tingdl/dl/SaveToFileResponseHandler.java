@@ -41,7 +41,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author aploese
  */
-public class SaveToFileResponseHandler implements ResponseHandler<Integer> {
+public class SaveToFileResponseHandler implements ResponseHandler<Long> {
 
    private static Logger LOG = LoggerFactory.getLogger(SaveToFileResponseHandler.class);
 
@@ -109,8 +109,37 @@ public class SaveToFileResponseHandler implements ResponseHandler<Integer> {
     public void setBook(Book book) {
         this.book = book;
     }
+         
+ private void updateProgress() {
+    final double flDouble = fileLength;
+    final double flKB = flDouble / 8/ 1024;
+    final double flMB = flKB / 1024;
+    final double runTime = (double)(System.currentTimeMillis() - startSysTime) / 1000;
+    final double kB_s = flKB / runTime;
+    final long eta = Math.round(((double)expectedFileLength - fileLength) / 8 / 1024 / kB_s); 
+    final long eta_s = eta % 60;
+    final long eta_m = (eta / 60) % 60;
+    final long eta_h = eta / 3600;
+    
+     int progressPercentage = (int)Math.round((double)fileLength / expectedFileLength * 100);
+    
+    final int width = 50; // progress bar width in chars
+    final int drawPercent = (int)((double)progressPercentage * width / 100);
 
-    public static enum FileType {
+    System.out.printf("\r%02d%% [", progressPercentage);
+    
+    for (int i = 0; i <= (drawPercent); i++) {
+      System.out.print("=");
+    }
+      System.out.print(">");
+    for (int i = drawPercent; i < width; i++) {
+      System.out.print(" ");
+    }
+    System.out.printf("] %.2f MB\t %.2fK/s\t ETA %d:%02d:%02d", flMB, kB_s , eta_h, eta_m, eta_s);
+    
+  }
+
+  public static enum FileType {
 
         ARCHIVE,
         THUMB;
@@ -120,7 +149,9 @@ public class SaveToFileResponseHandler implements ResponseHandler<Integer> {
     private Book book;
     private File tingPath;
     private MessageDigest md;
-    private int fileLength;
+    private long fileLength;
+    private long expectedFileLength;
+    private long startSysTime;
 
     public SaveToFileResponseHandler() {
         try {
@@ -137,7 +168,7 @@ public class SaveToFileResponseHandler implements ResponseHandler<Integer> {
      * {@link HttpResponseException}.
      */
    @Override
-    public Integer handleResponse(final HttpResponse response)
+    public Long handleResponse(final HttpResponse response)
             throws HttpResponseException, IOException {
         md.reset();
         StatusLine statusLine = response.getStatusLine();
@@ -147,6 +178,9 @@ public class SaveToFileResponseHandler implements ResponseHandler<Integer> {
             throw new HttpResponseException(statusLine.getStatusCode(),
                     statusLine.getReasonPhrase());
         }
+        expectedFileLength = entity.getContentLength();
+        startSysTime = System.currentTimeMillis();
+        
         try (InputStream is = entity.getContent()) {
             byte[] data = new byte[8192];
 
@@ -163,6 +197,7 @@ public class SaveToFileResponseHandler implements ResponseHandler<Integer> {
                         osb.write(data, 0, length);
                     }
                     fileLength += length;
+                    updateProgress();
                 }
                 if (ost != null) {
                     ost.close();

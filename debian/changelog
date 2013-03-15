@@ -1,3 +1,9 @@
+ting-dl (0.8.4-SNAPSHOT-1) UNRELEASED; urgency=low
+
+  * some things done ...
+
+ -- Arne Plöse <aploeseægmx.de>  Mon, 11 Mar 2013 12:33:12 +0100
+
 ting-dl (0.8.3-SNAPSHOT-1) UNRELEASED; urgency=low
 
   * Initial release (Closes: #nnnn)  <nnnn is the bug number of your

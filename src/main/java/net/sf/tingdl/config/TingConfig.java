@@ -213,6 +213,9 @@ public class TingConfig {
                     continue;
                 }
                 switch (prop[0]) {
+                    case "﻿alternative_server":
+                        alternativeServer = prop[1];
+                        break;
                     case "alternative_server":
                         alternativeServer = prop[1];
                         break;
