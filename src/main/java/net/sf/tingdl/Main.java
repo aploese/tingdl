@@ -24,15 +24,16 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.logging.Logger;
 import net.sf.tingdl.config.Book;
 import net.sf.tingdl.config.TingConfig;
+import net.sf.tingdl.config.UdiskctlWrapper;
 import net.sf.tingdl.dl.TingDownloadJob;
 import net.sf.tingdl.dl.TingDownloader;
 import org.apache.commons.cli.CommandLine;
@@ -50,40 +51,28 @@ import org.apache.commons.cli.PosixParser;
  */
 public class Main {
 
-    private void cleanTingDir() {
-        getTingConfig().findMountedTing();
-        File tingDevice = getTingConfig().getTingDevice();
-        if (tingDevice != null) {
-            // just unmount
-            executeCommand("umount", tingDevice.getAbsolutePath());
-        } else {
-            // find the Ting pen by its label
-            tingDevice = new File("/dev/disk/by-label/Ting");
-            if (!tingDevice.exists()) {
-                throw new RuntimeException("Can't find Ting pen");
-            }
-            try {
-                // get the link target (something like /dev/sdX)
-                tingDevice = tingDevice.getCanonicalFile();
-            } catch (IOException ex) {
-                throw new RuntimeException("Cant find ting pen by its label");
-            }
-            System.out.println("Found unmounted Ting: " + tingDevice.getAbsolutePath());
+    private boolean mountAndCleanTingDir() {
+        
+        if (!udiskctlWrapper.isAvailable()) {
+            System.err.println("No TING found");
+            return false;
+        }
+        
+        if (udiskctlWrapper.isMounted()) {
+            udiskctlWrapper.uMountTing();
         }
         //TODO Debian USB deveces have permision root.floppy => Ubuntu root.disk - so fsck will not work under Ubuntu 12.10 ...
-        executeCommand("/sbin/dosfsck",  "-Vva", tingDevice.getAbsolutePath());
-        executeCommand("gvfs-mount", "-d", tingDevice.getAbsolutePath());
-        //TODO we need gvfs which is from gnome to mount it again ???
-        getTingConfig().findMountedTing();
-        
-        final File tingDir = getTingConfig().getTingDir();
+        executeCommand("/sbin/dosfsck",  "-Vva", udiskctlWrapper.getTingDevice().getDevice());
+        udiskctlWrapper.mountTing();
+        final File tingDir = new File(tingConfig.getTingDir());
         new File(tingDir, "1.DAT").delete();
         new File(tingDir, "2.DAT").delete();
         new File(tingDir, "3.DAT").delete();
         new File(tingDir, "4.DAT").delete();
         new File(tingDir, "SETTING.DAT").delete();
         new File(tingDir, "TMP.INI").delete();
-        new File(tingDir, "BOOKS.SYS").delete();
+        new File(tingDir, "BOOK.SYS").delete();
+        return true;
     }
 
     private enum Job {
@@ -99,18 +88,27 @@ public class Main {
     private static final String CMDL_OPT_VERSION = "version";
     private static final String CMDL_OPT_ENABLE_BACKUP = "enable-backup";
     private static final String CMDL_OPT_BACKUP_DIR = "backup-dir";
-    private static final String CMDL_OPT_TING_DIR = "ting-dir";
     private static final String CMDL_OPT_CHECK_ALL = "check-all";
     private static final String CMDL_OPT_CHECK_TING = "check-ting";
     private static final String CMDL_OPT_CHECK_BACKUP = "check-backup";
     private static final String CMDL_OPT_CHECK_VERSIONS = "check-versions";
-    private TingDownloader tingDownloader;
+    private static Logger LOG_ROTATING = Logger.getLogger("TING");
 
+    private final UdiskctlWrapper udiskctlWrapper;
+    private final TingConfig tingConfig;
+    
+    public Main() {
+        udiskctlWrapper = new UdiskctlWrapper();
+        tingConfig = new TingConfig(udiskctlWrapper);
+    }
+    
     public static void main(String[] args) throws Exception {
 
         Main app = new Main();
         Job j = app.init(args);
-        app.cleanTingDir();
+        if (!app.mountAndCleanTingDir()) {
+            return;
+        }
         // Ceck Serial Number update if needed
         if (app.getTingConfig().isUninitializedSerialVersion()) {
             app.updateSerialNumber();
@@ -167,8 +165,12 @@ public class Main {
 
     }
 
-    private TingConfig getTingConfig() {
-        return TingConfig.getTingConfig();
+    public UdiskctlWrapper getUdiskctlWrapper() {
+        return udiskctlWrapper;
+    }
+    
+    public TingConfig getTingConfig() {
+        return tingConfig;
     }
 
     private Job init(String[] args) throws ParseException {
@@ -190,12 +192,6 @@ public class Main {
         if (cml.hasOption(CMDL_OPT_VERSION)) {
             System.out.println(appProps.getProperty("version"));
             return Job.NOTHING;
-        }
-
-        if (cml.hasOption(CMDL_OPT_TING_DIR)) {
-            getTingConfig().setTingDir(new File(cml.getOptionValue(CMDL_OPT_TING_DIR)));
-        } else {
-            getTingConfig().findMountedTing();
         }
 
         if (cml.hasOption(CMDL_OPT_BACKUP_DIR)) {
@@ -223,14 +219,13 @@ public class Main {
         }
 
         getTingConfig().readSettings();
-        tingDownloader = new TingDownloader();
 
         return Job.DLOWNLOAD;
     }
 
     private void updateSerialNumber() {
         // get serverIP which can handle the request
-        InetAddress server = tingDownloader.getServerIp(getTingConfig().getServer());
+        TingDownloader tingDownloader = new TingDownloader(tingConfig);
         getTingConfig().setSerial(tingDownloader.addSerialNumber(getTingConfig().getSerial(), getTingConfig().getFw(), getTingConfig().getSw3()));
         System.out.println("New Serialnumber: " + getTingConfig().getSerial());
         return;
@@ -242,7 +237,7 @@ public class Main {
         try {
             tbdBooks = getTingConfig().readTbdFile();
             for (Integer i : tbdBooks) {
-                booksToUpdateOnTing.put(i, new Book(i, getTingConfig().getArea()));
+                booksToUpdateOnTing.put(i, new Book(tingConfig, i, getTingConfig().getArea()));
                 System.out.printf("New book on TING: %d\n", i);
             }
         } catch (IOException e) {
@@ -285,11 +280,10 @@ public class Main {
         }
         booksToUpdateOnTing.clear();
 
-        // get serverIP which can handle the request
-        InetAddress server = tingDownloader.getServerIp(getTingConfig().getServer());
+        TingDownloader tingDownloader = new TingDownloader(tingConfig);
 
         tingDownloader.setSerialNumber(getTingConfig().getSerial());
-        tingDownloader.downloadBooks(jobs, getTingConfig().getTingDir());
+        tingDownloader.downloadBooks(jobs, new File(tingConfig.getTingDir()));
 
         try {
             //throw out junk 
@@ -300,6 +294,7 @@ public class Main {
     }
 
     private void checkVersions() throws IOException {
+        TingDownloader tingDownloader = new TingDownloader(tingConfig);
         Properties verionCheckProps = tingDownloader.checkCdfsVersion("win", getTingConfig().getFw(), getTingConfig().getSw3());
         if (!verionCheckProps.isEmpty()) {
             System.err.printf("New Ting CDFS\n");
@@ -335,11 +330,6 @@ public class Main {
         opt.setType(String.class);
         options.addOption(opt);
 
-        opt = new Option("t", CMDL_OPT_TING_DIR, true, "ting dir to use");
-        opt.setArgName(CMDL_OPT_TING_DIR);
-        opt.setType(String.class);
-        options.addOption(opt);
-
         optg = new OptionGroup();
 
         opt = new Option("ca", CMDL_OPT_CHECK_ALL, false, "check all files (exists and md5) then exit");
@@ -351,7 +341,7 @@ public class Main {
         opt = new Option("cb", CMDL_OPT_CHECK_BACKUP, false, "check backup (exists and md5) then exit");
         optg.addOption(opt);
 
-        opt = new Option("u", CMDL_OPT_CHECK_VERSIONS, true, "check ting versions and exit");
+        opt = new Option("u", CMDL_OPT_CHECK_VERSIONS, false, "check ting versions and exit");
         optg.addOption(opt);
 
         options.addOptionGroup(optg);
@@ -367,7 +357,7 @@ public class Main {
 
     private void checkTingMd5() {
         for (Book b : getTingConfig().getInstalledBooksOnTing()) {
-            b.checkMd5(getTingConfig().getTingDir());
+            b.checkMd5(new File(tingConfig.getTingDir()));
         }
     }
 }

@@ -40,22 +40,16 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author aploese
  */
 public class TingConfig {
-
-    /**
-     * @return the tingDevice
-     */
-    public File getTingDevice() {
-        return tingDevice;
-    }
+    
+    private UdiskctlWrapper udiskctlWrapper;
 
     /**
      * @return the sw0
@@ -113,6 +107,10 @@ public class TingConfig {
         this.sw3 = sw3;
     }
 
+    public String getTingDir() {
+        return udiskctlWrapper.getMountedDir() + "/$ting";
+    }
+
     public enum PenType {
 
         STANDARD, // smart
@@ -121,12 +119,9 @@ public class TingConfig {
     
     private final static DateFormat SETTINGS_DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
     private final static Charset SETTINGS_CHARSET = Charset.forName("UTF-16BE");
-    private final static TingConfig tingConfig = new TingConfig();
-    private final static Logger LOG = LoggerFactory.getLogger(TingConfig.class);
+    private final static Logger LOG = Logger.getLogger(TingConfig.class.getName());
     private final static long EMPTY_SERIAL_VERSION = 0L;
     private File tingBackupDir;
-    private File tingDir;
-    private File tingDevice;
     private String alternativeServer = "alternative.ting.eu";
     private String area = "en";
     private boolean automaticdownload = true;
@@ -166,39 +161,9 @@ public class TingConfig {
     private int windowposy = 134;
     private int windowwidth = 1151;
 
-    private TingConfig() {
+    public TingConfig(UdiskctlWrapper wrapper) {
         super();
-    }
-
-    public static TingConfig getTingConfig() {
-        return tingConfig;
-    }
-
-    public boolean findMountedTing() {
-//Use this on Win???        File[] roots = File.listRoots();
-
-        try (FileInputStream fis = new FileInputStream("/etc/mtab");
-                InputStreamReader isr = new InputStreamReader(fis);
-                BufferedReader br = new BufferedReader(isr)) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] mountData = line.split(" ");
-                if (mountData[1].endsWith("Ting")) {
-                    File tingMountDir = new File(mountData[1]);
-                    setTingDir(new File(tingMountDir, "$ting"));
-                    if (getTingDir().exists() && getTingDir().isDirectory()) {
-                        tingDevice = new File(mountData[0]);
-                        System.out.printf("$ting found at %s\n", getTingDir());
-                        return true;
-                    } else {
-                        setTingDir(null);
-                        return false;
-                    }
-                }
-            }
-        } catch (IOException ex) {
-        }
-        return false;
+        this.udiskctlWrapper = wrapper;
     }
 
     public void readSettings() {
@@ -354,13 +319,6 @@ public class TingConfig {
             }
         } catch (IOException ex) {
         }
-    }
-
-    /**
-     * @return the tingDir
-     */
-    public File getTingDir() {
-        return tingDir;
     }
 
     /**
@@ -872,7 +830,7 @@ public class TingConfig {
                             try {
                                 File newVer = new File(versionDir, String.format("%s_%s.txt", bookDir.getName(), getArea()));
                                 if (newVer.exists()) {
-                                    maxVer = new Book(newVer);
+                                    maxVer = new Book(this, newVer);
                                 }
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
@@ -890,13 +848,6 @@ public class TingConfig {
 
     public void clearTbdFile() throws IOException {
         writeTbdFile(new ArrayList<Integer>());
-    }
-
-    /**
-     * @param tingDir the tingDir to set
-     */
-    public void setTingDir(File tingDir) {
-        this.tingDir = tingDir;
     }
 
     /**
@@ -921,16 +872,16 @@ public class TingConfig {
     }
 
     public Collection<Book> getInstalledBooksOnTing() {
-        File[] files = tingDir.listFiles();
+        File[] files = new File(getTingDir()).listFiles();
         if (files == null) {
             return Collections.EMPTY_LIST;
         }
-        final Pattern p = Pattern.compile(String.format("\\d\\d\\d\\d\\d_%s.txt", getTingConfig().getArea()));
+        final Pattern p = Pattern.compile(String.format("\\d\\d\\d\\d\\d_%s.txt", getArea()));
         Collection<Book> result = new ArrayList(files.length);
         for (File f : files) {
             if (p.matcher(f.getName()).matches()) {
                 try {
-                    result.add(new Book(f));
+                    result.add(new Book(this, f));
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -950,7 +901,7 @@ public class TingConfig {
                 for (File versionDir : bookDir.listFiles()) {
                     if (versionDir.isDirectory() && bookVersionPattern.matcher(versionDir.getName()).matches()) {
                         try {
-                            result.add(new Book(new File(versionDir, String.format("%s_%s.txt", bookDir.getName(), getArea()))));
+                            result.add(new Book(this, new File(versionDir, String.format("%s_%s.txt", bookDir.getName(), getArea()))));
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }

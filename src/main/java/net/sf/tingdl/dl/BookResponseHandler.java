@@ -23,6 +23,7 @@ package net.sf.tingdl.dl;
 import java.io.IOException;
 import java.io.InputStream;
 import net.sf.tingdl.config.Book;
+import net.sf.tingdl.config.TingConfig;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
@@ -38,13 +39,16 @@ public class BookResponseHandler implements ResponseHandler<Book> {
 
     private String area;
     private int id;
+    private TingConfig tingConfig;
     
-    public BookResponseHandler(int id, String area) {
+    public BookResponseHandler(TingConfig tc, int id, String area) {
+        this(tc);
         this.id = id;
         this.area = area; 
     }
     
-    public BookResponseHandler() {
+    public BookResponseHandler(TingConfig tc) {
+        this.tingConfig = tc;
     }
     
     /**
@@ -52,7 +56,11 @@ public class BookResponseHandler implements ResponseHandler<Book> {
      * 2xx status code). If no response body exists, this returns null. If the
      * response was unsuccessful (>= 300 status code), throws an
      * {@link HttpResponseException}.
+     * @param response
+     * @return 
+     * @throws org.apache.http.client.HttpResponseException
      */
+    @Override
     public Book handleResponse(final HttpResponse response)
             throws HttpResponseException, IOException {
         StatusLine statusLine = response.getStatusLine();
@@ -63,7 +71,7 @@ public class BookResponseHandler implements ResponseHandler<Book> {
                     statusLine.getReasonPhrase());
         }
         try (InputStream is = entity.getContent()) {
-            return new Book(id, area, is);
+            return new Book(tingConfig, id, area, is);
         }
     }
 

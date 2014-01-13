@@ -1,0 +1,1247 @@
+/org/freedesktop/UDisks2/Manager:
+  org.freedesktop.UDisks2.Manager:
+    Version:            2.1.0
+
+/org/freedesktop/UDisks2/block_devices/loop0:
+  org.freedesktop.UDisks2.Block:
+    Configuration:              []
+    CryptoBackingDevice:        '/'
+    Device:                     /dev/loop0
+    DeviceNumber:               1792
+    Drive:                      '/'
+    HintAuto:                   false
+    HintIconName:               
+    HintIgnore:                 false
+    HintName:                   
+    HintPartitionable:          true
+    HintSymbolicIconName:       
+    HintSystem:                 true
+    Id:                         
+    IdLabel:                    
+    IdType:                     
+    IdUUID:                     
+    IdUsage:                    
+    IdVersion:                  
+    MDRaid:                     '/'
+    MDRaidMember:               '/'
+    PreferredDevice:            /dev/loop0
+    ReadOnly:                   false
+    Size:                       0
+    Symlinks:                   
+  org.freedesktop.UDisks2.Loop:
+    Autoclear:          false
+    BackingFile:        
+    SetupByUID:         0
+
+/org/freedesktop/UDisks2/block_devices/loop1:
+  org.freedesktop.UDisks2.Block:
+    Configuration:              []
+    CryptoBackingDevice:        '/'
+    Device:                     /dev/loop1
+    DeviceNumber:               1793
+    Drive:                      '/'
+    HintAuto:                   false
+    HintIconName:               
+    HintIgnore:                 false
+    HintName:                   
+    HintPartitionable:          true
+    HintSymbolicIconName:       
+    HintSystem:                 true
+    Id:                         
+    IdLabel:                    
+    IdType:                     
+    IdUUID:                     
+    IdUsage:                    
+    IdVersion:                  
+    MDRaid:                     '/'
+    MDRaidMember:               '/'
+    PreferredDevice:            /dev/loop1
+    ReadOnly:                   false
+    Size:                       0
+    Symlinks:                   
+  org.freedesktop.UDisks2.Loop:
+    Autoclear:          false
+    BackingFile:        
+    SetupByUID:         0
+
+/org/freedesktop/UDisks2/block_devices/loop2:
+  org.freedesktop.UDisks2.Block:
+    Configuration:              []
+    CryptoBackingDevice:        '/'
+    Device:                     /dev/loop2
+    DeviceNumber:               1794
+    Drive:                      '/'
+    HintAuto:                   false
+    HintIconName:               
+    HintIgnore:                 false
+    HintName:                   
+    HintPartitionable:          true
+    HintSymbolicIconName:       
+    HintSystem:                 true
+    Id:                         
+    IdLabel:                    
+    IdType:                     
+    IdUUID:                     
+    IdUsage:                    
+    IdVersion:                  
+    MDRaid:                     '/'
+    MDRaidMember:               '/'
+    PreferredDevice:            /dev/loop2
+    ReadOnly:                   false
+    Size:                       0
+    Symlinks:                   
+  org.freedesktop.UDisks2.Loop:
+    Autoclear:          false
+    BackingFile:        
+    SetupByUID:         0
+
+/org/freedesktop/UDisks2/block_devices/loop3:
+  org.freedesktop.UDisks2.Block:
+    Configuration:              []
+    CryptoBackingDevice:        '/'
+    Device:                     /dev/loop3
+    DeviceNumber:               1795
+    Drive:                      '/'
+    HintAuto:                   false
+    HintIconName:               
+    HintIgnore:                 false
+    HintName:                   
+    HintPartitionable:          true
+    HintSymbolicIconName:       
+    HintSystem:                 true
+    Id:                         
+    IdLabel:                    
+    IdType:                     
+    IdUUID:                     
+    IdUsage:                    
+    IdVersion:                  
+    MDRaid:                     '/'
+    MDRaidMember:               '/'
+    PreferredDevice:            /dev/loop3
+    ReadOnly:                   false
+    Size:                       0
+    Symlinks:                   
+  org.freedesktop.UDisks2.Loop:
+    Autoclear:          false
+    BackingFile:        
+    SetupByUID:         0
+
+/org/freedesktop/UDisks2/block_devices/loop4:
+  org.freedesktop.UDisks2.Block:
+    Configuration:              []
+    CryptoBackingDevice:        '/'
+    Device:                     /dev/loop4
+    DeviceNumber:               1796
+    Drive:                      '/'
+    HintAuto:                   false
+    HintIconName:               
+    HintIgnore:                 false
+    HintName:                   
+    HintPartitionable:          true
+    HintSymbolicIconName:       
+    HintSystem:                 true
+    Id:                         
+    IdLabel:                    
+    IdType:                     
+    IdUUID:                     
+    IdUsage:                    
+    IdVersion:                  
+    MDRaid:                     '/'
+    MDRaidMember:               '/'
+    PreferredDevice:            /dev/loop4
+    ReadOnly:                   false
+    Size:                       0
+    Symlinks:                   
+  org.freedesktop.UDisks2.Loop:
+    Autoclear:          false
+    BackingFile:        
+    SetupByUID:         0
+
+/org/freedesktop/UDisks2/block_devices/loop5:
+  org.freedesktop.UDisks2.Block:
+    Configuration:              []
+    CryptoBackingDevice:        '/'
+    Device:                     /dev/loop5
+    DeviceNumber:               1797
+    Drive:                      '/'
+    HintAuto:                   false
+    HintIconName:               
+    HintIgnore:                 false
+    HintName:                   
+    HintPartitionable:          true
+    HintSymbolicIconName:       
+    HintSystem:                 true
+    Id:                         
+    IdLabel:                    
+    IdType:                     
+    IdUUID:                     
+    IdUsage:                    
+    IdVersion:                  
+    MDRaid:                     '/'
+    MDRaidMember:               '/'
+    PreferredDevice:            /dev/loop5
+    ReadOnly:                   false
+    Size:                       0
+    Symlinks:                   
+  org.freedesktop.UDisks2.Loop:
+    Autoclear:          false
+    BackingFile:        
+    SetupByUID:         0
+
+/org/freedesktop/UDisks2/block_devices/loop6:
+  org.freedesktop.UDisks2.Block:
+    Configuration:              []
+    CryptoBackingDevice:        '/'
+    Device:                     /dev/loop6
+    DeviceNumber:               1798
+    Drive:                      '/'
+    HintAuto:                   false
+    HintIconName:               
+    HintIgnore:                 false
+    HintName:                   
+    HintPartitionable:          true
+    HintSymbolicIconName:       
+    HintSystem:                 true
+    Id:                         
+    IdLabel:                    
+    IdType:                     
+    IdUUID:                     
+    IdUsage:                    
+    IdVersion:                  
+    MDRaid:                     '/'
+    MDRaidMember:               '/'
+    PreferredDevice:            /dev/loop6
+    ReadOnly:                   false
+    Size:                       0
+    Symlinks:                   
+  org.freedesktop.UDisks2.Loop:
+    Autoclear:          false
+    BackingFile:        
+    SetupByUID:         0
+
+/org/freedesktop/UDisks2/block_devices/loop7:
+  org.freedesktop.UDisks2.Block:
+    Configuration:              []
+    CryptoBackingDevice:        '/'
+    Device:                     /dev/loop7
+    DeviceNumber:               1799
+    Drive:                      '/'
+    HintAuto:                   false
+    HintIconName:               
+    HintIgnore:                 false
+    HintName:                   
+    HintPartitionable:          true
+    HintSymbolicIconName:       
+    HintSystem:                 true
+    Id:                         
+    IdLabel:                    
+    IdType:                     
+    IdUUID:                     
+    IdUsage:                    
+    IdVersion:                  
+    MDRaid:                     '/'
+    MDRaidMember:               '/'
+    PreferredDevice:            /dev/loop7
+    ReadOnly:                   false
+    Size:                       0
+    Symlinks:                   
+  org.freedesktop.UDisks2.Loop:
+    Autoclear:          false
+    BackingFile:        
+    SetupByUID:         0
+
+/org/freedesktop/UDisks2/block_devices/ram0:
+  org.freedesktop.UDisks2.Block:
+    Configuration:              []
+    CryptoBackingDevice:        '/'
+    Device:                     /dev/ram0
+    DeviceNumber:               256
+    Drive:                      '/'
+    HintAuto:                   false
+    HintIconName:               
+    HintIgnore:                 false
+    HintName:                   
+    HintPartitionable:          true
+    HintSymbolicIconName:       
+    HintSystem:                 true
+    Id:                         
+    IdLabel:                    
+    IdType:                     
+    IdUUID:                     
+    IdUsage:                    
+    IdVersion:                  
+    MDRaid:                     '/'
+    MDRaidMember:               '/'
+    PreferredDevice:            /dev/ram0
+    ReadOnly:                   false
+    Size:                       67108864
+    Symlinks:                   
+
+/org/freedesktop/UDisks2/block_devices/ram1:
+  org.freedesktop.UDisks2.Block:
+    Configuration:              []
+    CryptoBackingDevice:        '/'
+    Device:                     /dev/ram1
+    DeviceNumber:               257
+    Drive:                      '/'
+    HintAuto:                   false
+    HintIconName:               
+    HintIgnore:                 false
+    HintName:                   
+    HintPartitionable:          true
+    HintSymbolicIconName:       
+    HintSystem:                 true
+    Id:                         
+    IdLabel:                    
+    IdType:                     
+    IdUUID:                     
+    IdUsage:                    
+    IdVersion:                  
+    MDRaid:                     '/'
+    MDRaidMember:               '/'
+    PreferredDevice:            /dev/ram1
+    ReadOnly:                   false
+    Size:                       67108864
+    Symlinks:                   
+
+/org/freedesktop/UDisks2/block_devices/ram10:
+  org.freedesktop.UDisks2.Block:
+    Configuration:              []
+    CryptoBackingDevice:        '/'
+    Device:                     /dev/ram10
+    DeviceNumber:               266
+    Drive:                      '/'
+    HintAuto:                   false
+    HintIconName:               
+    HintIgnore:                 false
+    HintName:                   
+    HintPartitionable:          true
+    HintSymbolicIconName:       
+    HintSystem:                 true
+    Id:                         
+    IdLabel:                    
+    IdType:                     
+    IdUUID:                     
+    IdUsage:                    
+    IdVersion:                  
+    MDRaid:                     '/'
+    MDRaidMember:               '/'
+    PreferredDevice:            /dev/ram10
+    ReadOnly:                   false
+    Size:                       67108864
+    Symlinks:                   
+
+/org/freedesktop/UDisks2/block_devices/ram11:
+  org.freedesktop.UDisks2.Block:
+    Configuration:              []
+    CryptoBackingDevice:        '/'
+    Device:                     /dev/ram11
+    DeviceNumber:               267
+    Drive:                      '/'
+    HintAuto:                   false
+    HintIconName:               
+    HintIgnore:                 false
+    HintName:                   
+    HintPartitionable:          true
+    HintSymbolicIconName:       
+    HintSystem:                 true
+    Id:                         
+    IdLabel:                    
+    IdType:                     
+    IdUUID:                     
+    IdUsage:                    
+    IdVersion:                  
+    MDRaid:                     '/'
+    MDRaidMember:               '/'
+    PreferredDevice:            /dev/ram11
+    ReadOnly:                   false
+    Size:                       67108864
+    Symlinks:                   
+
+/org/freedesktop/UDisks2/block_devices/ram12:
+  org.freedesktop.UDisks2.Block:
+    Configuration:              []
+    CryptoBackingDevice:        '/'
+    Device:                     /dev/ram12
+    DeviceNumber:               268
+    Drive:                      '/'
+    HintAuto:                   false
+    HintIconName:               
+    HintIgnore:                 false
+    HintName:                   
+    HintPartitionable:          true
+    HintSymbolicIconName:       
+    HintSystem:                 true
+    Id:                         
+    IdLabel:                    
+    IdType:                     
+    IdUUID:                     
+    IdUsage:                    
+    IdVersion:                  
+    MDRaid:                     '/'
+    MDRaidMember:               '/'
+    PreferredDevice:            /dev/ram12
+    ReadOnly:                   false
+    Size:                       67108864
+    Symlinks:                   
+
+/org/freedesktop/UDisks2/block_devices/ram13:
+  org.freedesktop.UDisks2.Block:
+    Configuration:              []
+    CryptoBackingDevice:        '/'
+    Device:                     /dev/ram13
+    DeviceNumber:               269
+    Drive:                      '/'
+    HintAuto:                   false
+    HintIconName:               
+    HintIgnore:                 false
+    HintName:                   
+    HintPartitionable:          true
+    HintSymbolicIconName:       
+    HintSystem:                 true
+    Id:                         
+    IdLabel:                    
+    IdType:                     
+    IdUUID:                     
+    IdUsage:                    
+    IdVersion:                  
+    MDRaid:                     '/'
+    MDRaidMember:               '/'
+    PreferredDevice:            /dev/ram13
+    ReadOnly:                   false
+    Size:                       67108864
+    Symlinks:                   
+
+/org/freedesktop/UDisks2/block_devices/ram14:
+  org.freedesktop.UDisks2.Block:
+    Configuration:              []
+    CryptoBackingDevice:        '/'
+    Device:                     /dev/ram14
+    DeviceNumber:               270
+    Drive:                      '/'
+    HintAuto:                   false
+    HintIconName:               
+    HintIgnore:                 false
+    HintName:                   
+    HintPartitionable:          true
+    HintSymbolicIconName:       
+    HintSystem:                 true
+    Id:                         
+    IdLabel:                    
+    IdType:                     
+    IdUUID:                     
+    IdUsage:                    
+    IdVersion:                  
+    MDRaid:                     '/'
+    MDRaidMember:               '/'
+    PreferredDevice:            /dev/ram14
+    ReadOnly:                   false
+    Size:                       67108864
+    Symlinks:                   
+
+/org/freedesktop/UDisks2/block_devices/ram15:
+  org.freedesktop.UDisks2.Block:
+    Configuration:              []
+    CryptoBackingDevice:        '/'
+    Device:                     /dev/ram15
+    DeviceNumber:               271
+    Drive:                      '/'
+    HintAuto:                   false
+    HintIconName:               
+    HintIgnore:                 false
+    HintName:                   
+    HintPartitionable:          true
+    HintSymbolicIconName:       
+    HintSystem:                 true
+    Id:                         
+    IdLabel:                    
+    IdType:                     
+    IdUUID:                     
+    IdUsage:                    
+    IdVersion:                  
+    MDRaid:                     '/'
+    MDRaidMember:               '/'
+    PreferredDevice:            /dev/ram15
+    ReadOnly:                   false
+    Size:                       67108864
+    Symlinks:                   
+
+/org/freedesktop/UDisks2/block_devices/ram2:
+  org.freedesktop.UDisks2.Block:
+    Configuration:              []
+    CryptoBackingDevice:        '/'
+    Device:                     /dev/ram2
+    DeviceNumber:               258
+    Drive:                      '/'
+    HintAuto:                   false
+    HintIconName:               
+    HintIgnore:                 false
+    HintName:                   
+    HintPartitionable:          true
+    HintSymbolicIconName:       
+    HintSystem:                 true
+    Id:                         
+    IdLabel:                    
+    IdType:                     
+    IdUUID:                     
+    IdUsage:                    
+    IdVersion:                  
+    MDRaid:                     '/'
+    MDRaidMember:               '/'
+    PreferredDevice:            /dev/ram2
+    ReadOnly:                   false
+    Size:                       67108864
+    Symlinks:                   
+
+/org/freedesktop/UDisks2/block_devices/ram3:
+  org.freedesktop.UDisks2.Block:
+    Configuration:              []
+    CryptoBackingDevice:        '/'
+    Device:                     /dev/ram3
+    DeviceNumber:               259
+    Drive:                      '/'
+    HintAuto:                   false
+    HintIconName:               
+    HintIgnore:                 false
+    HintName:                   
+    HintPartitionable:          true
+    HintSymbolicIconName:       
+    HintSystem:                 true
+    Id:                         
+    IdLabel:                    
+    IdType:                     
+    IdUUID:                     
+    IdUsage:                    
+    IdVersion:                  
+    MDRaid:                     '/'
+    MDRaidMember:               '/'
+    PreferredDevice:            /dev/ram3
+    ReadOnly:                   false
+    Size:                       67108864
+    Symlinks:                   
+
+/org/freedesktop/UDisks2/block_devices/ram4:
+  org.freedesktop.UDisks2.Block:
+    Configuration:              []
+    CryptoBackingDevice:        '/'
+    Device:                     /dev/ram4
+    DeviceNumber:               260
+    Drive:                      '/'
+    HintAuto:                   false
+    HintIconName:               
+    HintIgnore:                 false
+    HintName:                   
+    HintPartitionable:          true
+    HintSymbolicIconName:       
+    HintSystem:                 true
+    Id:                         
+    IdLabel:                    
+    IdType:                     
+    IdUUID:                     
+    IdUsage:                    
+    IdVersion:                  
+    MDRaid:                     '/'
+    MDRaidMember:               '/'
+    PreferredDevice:            /dev/ram4
+    ReadOnly:                   false
+    Size:                       67108864
+    Symlinks:                   
+
+/org/freedesktop/UDisks2/block_devices/ram5:
+  org.freedesktop.UDisks2.Block:
+    Configuration:              []
+    CryptoBackingDevice:        '/'
+    Device:                     /dev/ram5
+    DeviceNumber:               261
+    Drive:                      '/'
+    HintAuto:                   false
+    HintIconName:               
+    HintIgnore:                 false
+    HintName:                   
+    HintPartitionable:          true
+    HintSymbolicIconName:       
+    HintSystem:                 true
+    Id:                         
+    IdLabel:                    
+    IdType:                     
+    IdUUID:                     
+    IdUsage:                    
+    IdVersion:                  
+    MDRaid:                     '/'
+    MDRaidMember:               '/'
+    PreferredDevice:            /dev/ram5
+    ReadOnly:                   false
+    Size:                       67108864
+    Symlinks:                   
+
+/org/freedesktop/UDisks2/block_devices/ram6:
+  org.freedesktop.UDisks2.Block:
+    Configuration:              []
+    CryptoBackingDevice:        '/'
+    Device:                     /dev/ram6
+    DeviceNumber:               262
+    Drive:                      '/'
+    HintAuto:                   false
+    HintIconName:               
+    HintIgnore:                 false
+    HintName:                   
+    HintPartitionable:          true
+    HintSymbolicIconName:       
+    HintSystem:                 true
+    Id:                         
+    IdLabel:                    
+    IdType:                     
+    IdUUID:                     
+    IdUsage:                    
+    IdVersion:                  
+    MDRaid:                     '/'
+    MDRaidMember:               '/'
+    PreferredDevice:            /dev/ram6
+    ReadOnly:                   false
+    Size:                       67108864
+    Symlinks:                   
+
+/org/freedesktop/UDisks2/block_devices/ram7:
+  org.freedesktop.UDisks2.Block:
+    Configuration:              []
+    CryptoBackingDevice:        '/'
+    Device:                     /dev/ram7
+    DeviceNumber:               263
+    Drive:                      '/'
+    HintAuto:                   false
+    HintIconName:               
+    HintIgnore:                 false
+    HintName:                   
+    HintPartitionable:          true
+    HintSymbolicIconName:       
+    HintSystem:                 true
+    Id:                         
+    IdLabel:                    
+    IdType:                     
+    IdUUID:                     
+    IdUsage:                    
+    IdVersion:                  
+    MDRaid:                     '/'
+    MDRaidMember:               '/'
+    PreferredDevice:            /dev/ram7
+    ReadOnly:                   false
+    Size:                       67108864
+    Symlinks:                   
+
+/org/freedesktop/UDisks2/block_devices/ram8:
+  org.freedesktop.UDisks2.Block:
+    Configuration:              []
+    CryptoBackingDevice:        '/'
+    Device:                     /dev/ram8
+    DeviceNumber:               264
+    Drive:                      '/'
+    HintAuto:                   false
+    HintIconName:               
+    HintIgnore:                 false
+    HintName:                   
+    HintPartitionable:          true
+    HintSymbolicIconName:       
+    HintSystem:                 true
+    Id:                         
+    IdLabel:                    
+    IdType:                     
+    IdUUID:                     
+    IdUsage:                    
+    IdVersion:                  
+    MDRaid:                     '/'
+    MDRaidMember:               '/'
+    PreferredDevice:            /dev/ram8
+    ReadOnly:                   false
+    Size:                       67108864
+    Symlinks:                   
+
+/org/freedesktop/UDisks2/block_devices/ram9:
+  org.freedesktop.UDisks2.Block:
+    Configuration:              []
+    CryptoBackingDevice:        '/'
+    Device:                     /dev/ram9
+    DeviceNumber:               265
+    Drive:                      '/'
+    HintAuto:                   false
+    HintIconName:               
+    HintIgnore:                 false
+    HintName:                   
+    HintPartitionable:          true
+    HintSymbolicIconName:       
+    HintSystem:                 true
+    Id:                         
+    IdLabel:                    
+    IdType:                     
+    IdUUID:                     
+    IdUsage:                    
+    IdVersion:                  
+    MDRaid:                     '/'
+    MDRaidMember:               '/'
+    PreferredDevice:            /dev/ram9
+    ReadOnly:                   false
+    Size:                       67108864
+    Symlinks:                   
+
+/org/freedesktop/UDisks2/block_devices/sda:
+  org.freedesktop.UDisks2.Block:
+    Configuration:              []
+    CryptoBackingDevice:        '/'
+    Device:                     /dev/sda
+    DeviceNumber:               2048
+    Drive:                      '/org/freedesktop/UDisks2/drives/SAMSUNG_SSD_830_Series_S0VZNYABB00231'
+    HintAuto:                   false
+    HintIconName:               
+    HintIgnore:                 false
+    HintName:                   
+    HintPartitionable:          true
+    HintSymbolicIconName:       
+    HintSystem:                 true
+    Id:                         by-id-ata-SAMSUNG_SSD_830_Series_S0VZNYABB00231
+    IdLabel:                    
+    IdType:                     
+    IdUUID:                     
+    IdUsage:                    
+    IdVersion:                  
+    MDRaid:                     '/'
+    MDRaidMember:               '/'
+    PreferredDevice:            /dev/sda
+    ReadOnly:                   false
+    Size:                       256060514304
+    Symlinks:                   /dev/disk/by-id/ata-SAMSUNG_SSD_830_Series_S0VZNYABB00231
+                                /dev/disk/by-id/wwn-0x5002538043584d30
+  org.freedesktop.UDisks2.PartitionTable:
+    Type:               dos
+
+/org/freedesktop/UDisks2/block_devices/sda1:
+  org.freedesktop.UDisks2.Block:
+    Configuration:              [('fstab', {'fsname': <b'UUID=cda7db22-1f38-4033-bfab-8543cc0bfe98'>, 'dir': <b'/'>, 'type': <b'ext4'>, 'opts': <b'errors=remount-ro'>, 'freq': <0>, 'passno': <1>})]
+    CryptoBackingDevice:        '/'
+    Device:                     /dev/sda1
+    DeviceNumber:               2049
+    Drive:                      '/org/freedesktop/UDisks2/drives/SAMSUNG_SSD_830_Series_S0VZNYABB00231'
+    HintAuto:                   false
+    HintIconName:               
+    HintIgnore:                 false
+    HintName:                   
+    HintPartitionable:          true
+    HintSymbolicIconName:       
+    HintSystem:                 true
+    Id:                         by-id-ata-SAMSUNG_SSD_830_Series_S0VZNYABB00231-part1
+    IdLabel:                    root
+    IdType:                     ext4
+    IdUUID:                     cda7db22-1f38-4033-bfab-8543cc0bfe98
+    IdUsage:                    filesystem
+    IdVersion:                  1.0
+    MDRaid:                     '/'
+    MDRaidMember:               '/'
+    PreferredDevice:            /dev/sda1
+    ReadOnly:                   false
+    Size:                       256059113472
+    Symlinks:                   /dev/disk/by-id/ata-SAMSUNG_SSD_830_Series_S0VZNYABB00231-part1
+                                /dev/disk/by-id/wwn-0x5002538043584d30-part1
+                                /dev/disk/by-label/root
+                                /dev/disk/by-uuid/cda7db22-1f38-4033-bfab-8543cc0bfe98
+  org.freedesktop.UDisks2.Filesystem:
+    MountPoints:        /
+  org.freedesktop.UDisks2.Partition:
+    Flags:              128
+    IsContained:        false
+    IsContainer:        false
+    Name:               
+    Number:             1
+    Offset:             1048576
+    Size:               256059113472
+    Table:              '/org/freedesktop/UDisks2/block_devices/sda'
+    Type:               0x83
+    UUID:               
+
+/org/freedesktop/UDisks2/block_devices/sdb:
+  org.freedesktop.UDisks2.Block:
+    Configuration:              []
+    CryptoBackingDevice:        '/'
+    Device:                     /dev/sdb
+    DeviceNumber:               2064
+    Drive:                      '/org/freedesktop/UDisks2/drives/SAMSUNG_HD103SJ_S246JDWSA28857'
+    HintAuto:                   false
+    HintIconName:               
+    HintIgnore:                 false
+    HintName:                   
+    HintPartitionable:          true
+    HintSymbolicIconName:       
+    HintSystem:                 true
+    Id:                         by-id-ata-SAMSUNG_HD103SJ_S246JDWSA28857
+    IdLabel:                    
+    IdType:                     
+    IdUUID:                     
+    IdUsage:                    
+    IdVersion:                  
+    MDRaid:                     '/'
+    MDRaidMember:               '/'
+    PreferredDevice:            /dev/sdb
+    ReadOnly:                   false
+    Size:                       1000204886016
+    Symlinks:                   /dev/disk/by-id/ata-SAMSUNG_HD103SJ_S246JDWSA28857
+                                /dev/disk/by-id/wwn-0x50024e90023ea2cc
+  org.freedesktop.UDisks2.PartitionTable:
+    Type:               dos
+
+/org/freedesktop/UDisks2/block_devices/sdb1:
+  org.freedesktop.UDisks2.Block:
+    Configuration:              [('fstab', {'fsname': <b'UUID=69d40e77-c5fd-40dd-afd8-c88859beb1fa'>, 'dir': <b'/media/hdd-apl'>, 'type': <b'ext4'>, 'opts': <b'errors=remount-ro'>, 'freq': <0>, 'passno': <1>})]
+    CryptoBackingDevice:        '/'
+    Device:                     /dev/sdb1
+    DeviceNumber:               2065
+    Drive:                      '/org/freedesktop/UDisks2/drives/SAMSUNG_HD103SJ_S246JDWSA28857'
+    HintAuto:                   false
+    HintIconName:               
+    HintIgnore:                 false
+    HintName:                   
+    HintPartitionable:          true
+    HintSymbolicIconName:       
+    HintSystem:                 true
+    Id:                         by-id-ata-SAMSUNG_HD103SJ_S246JDWSA28857-part1
+    IdLabel:                    hdd-apl
+    IdType:                     ext4
+    IdUUID:                     69d40e77-c5fd-40dd-afd8-c88859beb1fa
+    IdUsage:                    filesystem
+    IdVersion:                  1.0
+    MDRaid:                     '/'
+    MDRaidMember:               '/'
+    PreferredDevice:            /dev/sdb1
+    ReadOnly:                   false
+    Size:                       988045277184
+    Symlinks:                   /dev/disk/by-id/ata-SAMSUNG_HD103SJ_S246JDWSA28857-part1
+                                /dev/disk/by-id/wwn-0x50024e90023ea2cc-part1
+                                /dev/disk/by-label/hdd-apl
+                                /dev/disk/by-uuid/69d40e77-c5fd-40dd-afd8-c88859beb1fa
+  org.freedesktop.UDisks2.Filesystem:
+    MountPoints:        /media/hdd-apl
+  org.freedesktop.UDisks2.Partition:
+    Flags:              0
+    IsContained:        false
+    IsContainer:        false
+    Name:               
+    Number:             1
+    Offset:             32256
+    Size:               988045277184
+    Table:              '/org/freedesktop/UDisks2/block_devices/sdb'
+    Type:               0x83
+    UUID:               
+
+/org/freedesktop/UDisks2/block_devices/sdb2:
+  org.freedesktop.UDisks2.Block:
+    Configuration:              []
+    CryptoBackingDevice:        '/'
+    Device:                     /dev/sdb2
+    DeviceNumber:               2066
+    Drive:                      '/org/freedesktop/UDisks2/drives/SAMSUNG_HD103SJ_S246JDWSA28857'
+    HintAuto:                   false
+    HintIconName:               
+    HintIgnore:                 false
+    HintName:                   
+    HintPartitionable:          true
+    HintSymbolicIconName:       
+    HintSystem:                 true
+    Id:                         by-id-ata-SAMSUNG_HD103SJ_S246JDWSA28857-part2
+    IdLabel:                    
+    IdType:                     
+    IdUUID:                     
+    IdUsage:                    
+    IdVersion:                  
+    MDRaid:                     '/'
+    MDRaidMember:               '/'
+    PreferredDevice:            /dev/sdb2
+    ReadOnly:                   false
+    Size:                       1024
+    Symlinks:                   /dev/disk/by-id/ata-SAMSUNG_HD103SJ_S246JDWSA28857-part2
+                                /dev/disk/by-id/wwn-0x50024e90023ea2cc-part2
+  org.freedesktop.UDisks2.Partition:
+    Flags:              0
+    IsContained:        false
+    IsContainer:        true
+    Name:               
+    Number:             2
+    Offset:             988045340672
+    Size:               12156932608
+    Table:              '/org/freedesktop/UDisks2/block_devices/sdb'
+    Type:               0x05
+    UUID:               
+
+/org/freedesktop/UDisks2/block_devices/sdb5:
+  org.freedesktop.UDisks2.Block:
+    Configuration:              []
+    CryptoBackingDevice:        '/'
+    Device:                     /dev/sdb5
+    DeviceNumber:               2069
+    Drive:                      '/org/freedesktop/UDisks2/drives/SAMSUNG_HD103SJ_S246JDWSA28857'
+    HintAuto:                   false
+    HintIconName:               
+    HintIgnore:                 false
+    HintName:                   
+    HintPartitionable:          true
+    HintSymbolicIconName:       
+    HintSystem:                 true
+    Id:                         by-id-ata-SAMSUNG_HD103SJ_S246JDWSA28857-part5
+    IdLabel:                    
+    IdType:                     swap
+    IdUUID:                     efab52de-eca4-4248-a8a1-8eebcb46d04a
+    IdUsage:                    other
+    IdVersion:                  2
+    MDRaid:                     '/'
+    MDRaidMember:               '/'
+    PreferredDevice:            /dev/sdb5
+    ReadOnly:                   false
+    Size:                       12156931584
+    Symlinks:                   /dev/disk/by-id/ata-SAMSUNG_HD103SJ_S246JDWSA28857-part5
+                                /dev/disk/by-id/wwn-0x50024e90023ea2cc-part5
+                                /dev/disk/by-uuid/efab52de-eca4-4248-a8a1-8eebcb46d04a
+  org.freedesktop.UDisks2.Partition:
+    Flags:              0
+    IsContained:        true
+    IsContainer:        false
+    Name:               
+    Number:             5
+    Offset:             988045341696
+    Size:               12156931584
+    Table:              '/org/freedesktop/UDisks2/block_devices/sdb'
+    Type:               0x82
+    UUID:               
+  org.freedesktop.UDisks2.Swapspace:
+    Active:             false
+
+/org/freedesktop/UDisks2/block_devices/sdc:
+  org.freedesktop.UDisks2.Block:
+    Configuration:              []
+    CryptoBackingDevice:        '/'
+    Device:                     /dev/sdc
+    DeviceNumber:               2080
+    Drive:                      '/org/freedesktop/UDisks2/drives/TingDisk_VER_5_2e2_2e1_2e3_123456'
+    HintAuto:                   true
+    HintIconName:               
+    HintIgnore:                 false
+    HintName:                   
+    HintPartitionable:          true
+    HintSymbolicIconName:       
+    HintSystem:                 false
+    Id:                         by-uuid-D483-A086
+    IdLabel:                    Ting
+    IdType:                     vfat
+    IdUUID:                     D483-A086
+    IdUsage:                    filesystem
+    IdVersion:                  FAT32
+    MDRaid:                     '/'
+    MDRaidMember:               '/'
+    PreferredDevice:            /dev/sdc
+    ReadOnly:                   false
+    Size:                       1854734336
+    Symlinks:                   /dev/disk/by-id/usb-TingDisk_VER_5.2.1.3_123456-0:1
+                                /dev/disk/by-label/Ting
+                                /dev/disk/by-path/pci-0000:00:1d.7-usb-0:1:1.0-scsi-0:0:0:1
+                                /dev/disk/by-uuid/D483-A086
+  org.freedesktop.UDisks2.Filesystem:
+    MountPoints:        /media/Ting
+
+/org/freedesktop/UDisks2/block_devices/sr0:
+  org.freedesktop.UDisks2.Block:
+    Configuration:              []
+    CryptoBackingDevice:        '/'
+    Device:                     /dev/sr0
+    DeviceNumber:               2816
+    Drive:                      '/org/freedesktop/UDisks2/drives/ATAPI___iHAS224___Y_ATAPI_iHAS224_Y'
+    HintAuto:                   true
+    HintIconName:               
+    HintIgnore:                 false
+    HintName:                   
+    HintPartitionable:          false
+    HintSymbolicIconName:       
+    HintSystem:                 false
+    Id:                         
+    IdLabel:                    
+    IdType:                     
+    IdUUID:                     
+    IdUsage:                    
+    IdVersion:                  
+    MDRaid:                     '/'
+    MDRaidMember:               '/'
+    PreferredDevice:            /dev/sr0
+    ReadOnly:                   true
+    Size:                       0
+    Symlinks:                   /dev/cdrom
+                                /dev/disk/by-id/ata-ATAPI_iHAS224_Y
+
+/org/freedesktop/UDisks2/block_devices/sr1:
+  org.freedesktop.UDisks2.Block:
+    Configuration:              []
+    CryptoBackingDevice:        '/'
+    Device:                     /dev/sr1
+    DeviceNumber:               2817
+    Drive:                      '/org/freedesktop/UDisks2/drives/TingDisk_VER_5_2e2_2e1_2e3_123456_1'
+    HintAuto:                   true
+    HintIconName:               
+    HintIgnore:                 false
+    HintName:                   
+    HintPartitionable:          false
+    HintSymbolicIconName:       
+    HintSystem:                 false
+    Id:                         by-label-Ting\x20CDFS
+    IdLabel:                    Ting CDFS
+    IdType:                     udf
+    IdUUID:                     
+    IdUsage:                    filesystem
+    IdVersion:                  
+    MDRaid:                     '/'
+    MDRaidMember:               '/'
+    PreferredDevice:            /dev/sr1
+    ReadOnly:                   true
+    Size:                       29054976
+    Symlinks:                   /dev/cdrom2
+                                /dev/disk/by-id/usb-TingDisk_VER_5.2.1.3_123456-0:0
+                                /dev/disk/by-label/Ting\x20CDFS
+                                /dev/disk/by-path/pci-0000:00:1d.7-usb-0:1:1.0-scsi-0:0:0:0
+  org.freedesktop.UDisks2.Filesystem:
+    MountPoints:        
+
+/org/freedesktop/UDisks2/drives/ATAPI___iHAS224___Y_ATAPI_iHAS224_Y:
+  org.freedesktop.UDisks2.Drive:
+    CanPowerOff:                false
+    Configuration:              {}
+    ConnectionBus:              
+    Ejectable:                  true
+    Id:                         ATAPI---iHAS224---Y-ATAPI_iHAS224_Y
+    Media:                      
+    MediaAvailable:             false
+    MediaChangeDetected:        true
+    MediaCompatibility:         optical_cd
+                                optical_cd_r
+                                optical_cd_rw
+                                optical_dvd
+                                optical_dvd_plus_r
+                                optical_dvd_plus_r_dl
+                                optical_dvd_plus_rw
+                                optical_dvd_r
+                                optical_dvd_ram
+                                optical_dvd_rw
+                                optical_mrw
+                                optical_mrw_w
+    MediaRemovable:             true
+    Model:                      ATAPI   iHAS224   Y
+    Optical:                    false
+    OpticalBlank:               false
+    OpticalNumAudioTracks:      0
+    OpticalNumDataTracks:       0
+    OpticalNumSessions:         0
+    OpticalNumTracks:           0
+    Removable:                  true
+    Revision:                   ZL0Y
+    RotationRate:               -1
+    Seat:                       seat0
+    Serial:                     ATAPI_iHAS224_Y
+    SiblingId:                  
+    Size:                       0
+    SortKey:                    00coldplug/11removable/sr0
+    TimeDetected:               1389085845719861
+    TimeMediaDetected:          0
+    Vendor:                     
+    WWN:                        
+  org.freedesktop.UDisks2.Drive.Ata:
+    AamEnabled:                                 false
+    AamSupported:                               false
+    AamVendorRecommendedValue:                  0
+    ApmEnabled:                                 false
+    ApmSupported:                               false
+    PmEnabled:                                  false
+    PmSupported:                                false
+    SecurityEnhancedEraseUnitMinutes:           0
+    SecurityEraseUnitMinutes:                   0
+    SecurityFrozen:                             false
+    SmartEnabled:                               false
+    SmartFailing:                               false
+    SmartNumAttributesFailedInThePast:          -1
+    SmartNumAttributesFailing:                  -1
+    SmartNumBadSectors:                         1
+    SmartPowerOnSeconds:                        0
+    SmartSelftestPercentRemaining:              -1
+    SmartSelftestStatus:                        
+    SmartSupported:                             false
+    SmartTemperature:                           0.0
+    SmartUpdated:                               0
+    WriteCacheEnabled:                          false
+    WriteCacheSupported:                        false
+
+/org/freedesktop/UDisks2/drives/SAMSUNG_HD103SJ_S246JDWSA28857:
+  org.freedesktop.UDisks2.Drive:
+    CanPowerOff:                false
+    Configuration:              {}
+    ConnectionBus:              
+    Ejectable:                  false
+    Id:                         SAMSUNG-HD103SJ-S246JDWSA28857
+    Media:                      
+    MediaAvailable:             true
+    MediaChangeDetected:        true
+    MediaCompatibility:         
+    MediaRemovable:             false
+    Model:                      SAMSUNG HD103SJ
+    Optical:                    false
+    OpticalBlank:               false
+    OpticalNumAudioTracks:      0
+    OpticalNumDataTracks:       0
+    OpticalNumSessions:         0
+    OpticalNumTracks:           0
+    Removable:                  false
+    Revision:                   1AJ100E4
+    RotationRate:               7200
+    Seat:                       seat0
+    Serial:                     S246JDWSA28857
+    SiblingId:                  
+    Size:                       1000204886016
+    SortKey:                    00coldplug/00fixed/sd____b
+    TimeDetected:               1389085845724153
+    TimeMediaDetected:          1389085845724153
+    Vendor:                     
+    WWN:                        0x50024e90023ea2cc
+  org.freedesktop.UDisks2.Drive.Ata:
+    AamEnabled:                                 false
+    AamSupported:                               true
+    AamVendorRecommendedValue:                  254
+    ApmEnabled:                                 true
+    ApmSupported:                               true
+    PmEnabled:                                  true
+    PmSupported:                                true
+    SecurityEnhancedEraseUnitMinutes:           148
+    SecurityEraseUnitMinutes:                   148
+    SecurityFrozen:                             false
+    SmartEnabled:                               true
+    SmartFailing:                               false
+    SmartNumAttributesFailedInThePast:          1
+    SmartNumAttributesFailing:                  0
+    SmartNumBadSectors:                         0
+    SmartPowerOnSeconds:                        26755200
+    SmartSelftestPercentRemaining:              0
+    SmartSelftestStatus:                        success
+    SmartSupported:                             true
+    SmartTemperature:                           303.15000000000003
+    SmartUpdated:                               1389089071
+    WriteCacheEnabled:                          true
+    WriteCacheSupported:                        true
+
+/org/freedesktop/UDisks2/drives/SAMSUNG_SSD_830_Series_S0VZNYABB00231:
+  org.freedesktop.UDisks2.Drive:
+    CanPowerOff:                false
+    Configuration:              {}
+    ConnectionBus:              
+    Ejectable:                  false
+    Id:                         SAMSUNG-SSD-830-Series-S0VZNYABB00231
+    Media:                      
+    MediaAvailable:             true
+    MediaChangeDetected:        true
+    MediaCompatibility:         
+    MediaRemovable:             false
+    Model:                      SAMSUNG SSD 830 Series
+    Optical:                    false
+    OpticalBlank:               false
+    OpticalNumAudioTracks:      0
+    OpticalNumDataTracks:       0
+    OpticalNumSessions:         0
+    OpticalNumTracks:           0
+    Removable:                  false
+    Revision:                   CXM01B1Q
+    RotationRate:               0
+    Seat:                       seat0
+    Serial:                     S0VZNYABB00231
+    SiblingId:                  
+    Size:                       256060514304
+    SortKey:                    00coldplug/00fixed/sd____a
+    TimeDetected:               1389085845686333
+    TimeMediaDetected:          1389085845686333
+    Vendor:                     
+    WWN:                        0x5002538043584d30
+  org.freedesktop.UDisks2.Drive.Ata:
+    AamEnabled:                                 false
+    AamSupported:                               false
+    AamVendorRecommendedValue:                  0
+    ApmEnabled:                                 false
+    ApmSupported:                               false
+    PmEnabled:                                  true
+    PmSupported:                                true
+    SecurityEnhancedEraseUnitMinutes:           16
+    SecurityEraseUnitMinutes:                   6
+    SecurityFrozen:                             false
+    SmartEnabled:                               true
+    SmartFailing:                               false
+    SmartNumAttributesFailedInThePast:          0
+    SmartNumAttributesFailing:                  0
+    SmartNumBadSectors:                         0
+    SmartPowerOnSeconds:                        12772800
+    SmartSelftestPercentRemaining:              0
+    SmartSelftestStatus:                        success
+    SmartSupported:                             true
+    SmartTemperature:                           296.15000000000003
+    SmartUpdated:                               1389089071
+    WriteCacheEnabled:                          true
+    WriteCacheSupported:                        true
+
+/org/freedesktop/UDisks2/drives/TingDisk_VER_5_2e2_2e1_2e3_123456:
+  org.freedesktop.UDisks2.Drive:
+    CanPowerOff:                true
+    Configuration:              {}
+    ConnectionBus:              usb
+    Ejectable:                  true
+    Id:                         TingDisk-VER-5.2.1.3-123456
+    Media:                      
+    MediaAvailable:             true
+    MediaChangeDetected:        true
+    MediaCompatibility:         
+    MediaRemovable:             true
+    Model:                      VER 5.2.1.3
+    Optical:                    false
+    OpticalBlank:               false
+    OpticalNumAudioTracks:      0
+    OpticalNumDataTracks:       0
+    OpticalNumSessions:         0
+    OpticalNumTracks:           0
+    Removable:                  true
+    Revision:                   0100
+    RotationRate:               -1
+    Seat:                       seat0
+    Serial:                     123456
+    SiblingId:                  /sys/devices/pci0000:00/0000:00:1d.7/usb2/2-1/2-1:1.0
+    Size:                       1854734336
+    SortKey:                    00coldplug/12removable/sd____c
+    TimeDetected:               1389085847192013
+    TimeMediaDetected:          1389085847192013
+    Vendor:                     TingDisk
+    WWN:                        
+
+/org/freedesktop/UDisks2/drives/TingDisk_VER_5_2e2_2e1_2e3_123456_1:
+  org.freedesktop.UDisks2.Drive:
+    CanPowerOff:                true
+    Configuration:              {}
+    ConnectionBus:              usb
+    Ejectable:                  true
+    Id:                         TingDisk-VER-5.2.1.3-123456
+    Media:                      optical_cd
+    MediaAvailable:             true
+    MediaChangeDetected:        true
+    MediaCompatibility:         optical_cd
+                                optical_mrw
+                                optical_mrw_w
+    MediaRemovable:             true
+    Model:                      VER 5.2.1.3
+    Optical:                    true
+    OpticalBlank:               false
+    OpticalNumAudioTracks:      0
+    OpticalNumDataTracks:       2
+    OpticalNumSessions:         0
+    OpticalNumTracks:           1
+    Removable:                  true
+    Revision:                   0100
+    RotationRate:               -1
+    Seat:                       seat0
+    Serial:                     123456
+    SiblingId:                  /sys/devices/pci0000:00/0000:00:1d.7/usb2/2-1/2-1:1.0
+    Size:                       29054976
+    SortKey:                    00coldplug/11removable/sr1
+    TimeDetected:               1389085847168836
+    TimeMediaDetected:          1389085847168836
+    Vendor:                     TingDisk
+    WWN:                        

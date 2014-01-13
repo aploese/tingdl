@@ -38,19 +38,19 @@ import java.security.MessageDigest;
  */
 public class Book {
 
-    public Book(File bookTxtFile) throws IOException {
-        this(Integer.parseInt(bookTxtFile.getName().substring(0, 5)), bookTxtFile.getName().substring(6, 8));
+    public Book(TingConfig tc, File bookTxtFile) throws IOException {
+        this(tc, Integer.parseInt(bookTxtFile.getName().substring(0, 5)), bookTxtFile.getName().substring(6, 8));
         try (FileReader fr = new FileReader(bookTxtFile)) {
             fillData(fr);
         }
     }
 
-    public Book(String filename) throws IOException {
-        this(new File(filename));
+    public Book(TingConfig tc, String filename) throws IOException {
+        this(tc, new File(filename));
     }
 
-    public Book(int id, String lang, InputStream is) throws IOException {
-        this(id, lang);
+    public Book(TingConfig tc, int id, String lang, InputStream is) throws IOException {
+        this(tc, id, lang);
         try (InputStreamReader isr = new InputStreamReader(is)) {
             fillData(isr);
         }
@@ -106,8 +106,10 @@ public class Book {
     private String fileMD5;
     private String scriptMD5;
     private String bookAreaCode;
+    private TingConfig tc;
 
-    public Book(int id, String lang) {
+    public Book(TingConfig tc, int id, String lang) {
+        this.tc = tc;
         this.id = id;
         this.lang = lang;
     }
@@ -317,7 +319,7 @@ public class Book {
     }
 
     public File getBackupDir() {
-        File f = new File(TingConfig.getTingConfig().getTingBackupDir(), String.format("%05d", getId()));
+        File f = new File(tc.getTingBackupDir(), String.format("%05d", getId()));
         f.mkdir();
         f = new File(f, String.format("%d", getBookVersion()));
         f.mkdir();

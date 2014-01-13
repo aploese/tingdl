@@ -27,6 +27,7 @@ import java.io.InputStream;
 import java.security.MessageDigest;
 import java.util.EnumSet;
 import java.util.Set;
+import java.util.logging.Logger;
 import net.sf.tingdl.config.Book;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -34,8 +35,6 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.util.EntityUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -43,7 +42,7 @@ import org.slf4j.LoggerFactory;
  */
 public class SaveToFileResponseHandler implements ResponseHandler<Long> {
 
-   private static Logger LOG = LoggerFactory.getLogger(SaveToFileResponseHandler.class);
+   private static Logger LOG = Logger.getLogger(SaveToFileResponseHandler.class.getName());
    
    private final static double BYTE_TO_MB = 1d / 8 / 1024 / 1024;
    private final static double BYTE_TO_KB = 1d / 8 / 1024;

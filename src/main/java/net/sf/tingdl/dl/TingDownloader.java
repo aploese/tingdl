@@ -28,15 +28,16 @@ import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.util.Collection;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import net.sf.tingdl.config.Book;
+import net.sf.tingdl.config.TingConfig;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -44,7 +45,7 @@ import org.slf4j.LoggerFactory;
  */
 public class TingDownloader {
 
-    private static Logger LOG = LoggerFactory.getLogger(TingDownloader.class);
+    private static Logger LOG = Logger.getLogger(TingDownloader.class.getName());
 
     public static String BUSY_PATH = "/public/server-busy/";
     public static String ADD_SN_PATH_TEMPLATE = "/public/add-sn/start_sn/%d/fw_version/%s/ting_version/%d/";
@@ -54,13 +55,16 @@ public class TingDownloader {
     public static String CDFS_PATH_TEMPLATE = "/cdfs.php?action=version&OS=%s&fw=%sd&ting=%d&sn=%d";
     public static String FW_PATH_TEMPLATE = "/fw.php?action=version&OS=%s&fw=%s&ting=%d&sn=%d";
     private HttpClient httpclient;
-    private HttpGet httpGet;
+    private final HttpGet httpGet;
     private InetAddress address;
     private long serialNumber;
-
-    public TingDownloader() {
+    private TingConfig tingConfig;
+    
+    public TingDownloader(TingConfig tc) {
+        this.tingConfig = tc;
         httpclient = new DefaultHttpClient();
         httpGet = new HttpGet();
+        initServerIp();
     }
 
     private URI buildUriCdfs(String os, String fwVersion, int tingVersion) {
@@ -95,12 +99,12 @@ public class TingDownloader {
         }
     }
 
-    public InetAddress getServerIp(String host) {
+    public void initServerIp() {
         InetAddress[] addresses = null;
         int trys = 3;
         try {
             while (trys-- > 0) {
-                addresses = InetAddress.getAllByName(host);
+                addresses = InetAddress.getAllByName(tingConfig.getServer());
                 for (InetAddress addr : addresses) {
                     address = addr;
                     httpGet.setURI(buildURI(BUSY_PATH));
@@ -111,7 +115,7 @@ public class TingDownloader {
                             System.out.printf("ting @%s is busy\n", addr.toString());
                         } else {
                             System.out.printf("Will use ting @%s\n", addr.toString());
-                            return address;
+                            return;
                         }
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
@@ -128,7 +132,6 @@ public class TingDownloader {
         } catch (UnknownHostException ex) {
             throw new RuntimeException(ex);
         }
-        return addresses[0];
     }
 
     public long addSerialNumber(long sn, String fwVersion, int tingVersion) {
@@ -158,7 +161,7 @@ public class TingDownloader {
     }
 
     public void downloadBooks(Collection<TingDownloadJob> jobs, File tingPath) {
-        BookResponseHandler bookHandler = new BookResponseHandler();
+        BookResponseHandler bookHandler = new BookResponseHandler(tingConfig);
         SaveToFileResponseHandler fileHandler = new SaveToFileResponseHandler();
         fileHandler.setTingPath(tingPath);
         for (TingDownloadJob job : jobs) {
@@ -204,10 +207,9 @@ public class TingDownloader {
                     }
                 }
             } catch (HttpResponseException ex) {
-                LOG.error("Statuscode; {0} URI: {1}", ex.getStatusCode(), httpGet.getURI().toString());
-            } catch (Exception ex) {
-                LOG.error("HTTP error", ex);
-                continue;
+                LOG.log(Level.SEVERE, "Statuscode; {0} URI: {1}", new Object[]{ex.getStatusCode(), httpGet.getURI()});
+            } catch (IOException ex) {
+                LOG.log(Level.SEVERE, "HTTP error", ex);
             }
         }
     }

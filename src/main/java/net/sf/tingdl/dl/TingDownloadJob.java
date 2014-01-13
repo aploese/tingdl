@@ -27,9 +27,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.EnumSet;
 import java.util.Set;
+import java.util.logging.Logger;
 import net.sf.tingdl.config.Book;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -37,7 +36,7 @@ import org.slf4j.LoggerFactory;
  */
 public class TingDownloadJob {
 
-    private static Logger LOG = LoggerFactory.getLogger(TingDownloadJob.class);
+    private static Logger LOG = Logger.getLogger(TingDownloadJob.class.getName());
     private Book book;
     private Set<DestinationType> destinationTypes = EnumSet.noneOf(DestinationType.class);
     private Set<DestinationType> destinationUpdated = EnumSet.noneOf(DestinationType.class);
