@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.sf.ting-dl</groupId>
     <artifactId>ting-dl</artifactId>
-    <version>0.8.4-SNAPSHOT</version>
+    <version>0.8.6-SNAPSHOT</version>
     <packaging>jar</packaging>
 	
     <name>ting-dl</name>
