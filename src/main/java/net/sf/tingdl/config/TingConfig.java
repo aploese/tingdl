@@ -40,6 +40,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
@@ -48,7 +49,7 @@ import java.util.regex.Pattern;
  * @author aploese
  */
 public class TingConfig {
-    
+
     private UdiskctlWrapper udiskctlWrapper;
 
     /**
@@ -116,7 +117,7 @@ public class TingConfig {
         STANDARD, // smart
         LIGHT; // classic
     }
-    
+
     private final static DateFormat SETTINGS_DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
     private final static Charset SETTINGS_CHARSET = Charset.forName("UTF-16BE");
     private final static Logger LOG = Logger.getLogger(TingConfig.class.getName());
@@ -173,14 +174,15 @@ public class TingConfig {
                 BufferedReader br = new BufferedReader(isr)) {
             String line;
             while ((line = br.readLine()) != null) {
+                if (!line.isEmpty() && (((short) line.charAt(0)) & 0xFF) == 0xFF) {
+                    line = line.substring(1);
+                }
+
                 String[] prop = line.split("=");
                 if (prop.length == 1) {
                     continue;
                 }
                 switch (prop[0]) {
-                    case "﻿alternative_server":
-                        alternativeServer = prop[1];
-                        break;
                     case "alternative_server":
                         alternativeServer = prop[1];
                         break;
@@ -193,8 +195,13 @@ public class TingConfig {
                     case "autooff":
                         autooff = "1".equals(prop[1]);
                         break;
-                    case "book":
+                    case "﻿book":
                         book = Integer.valueOf(prop[1]);
+                        break;
+                    case "book":
+                        if (!prop[1].equals("null")) {
+                            book = Integer.valueOf(prop[1]);
+                        }
                         break;
                     case "cdfs":
                         try {
@@ -269,13 +276,7 @@ public class TingConfig {
                         break;
                     case "sw":
                         String sw = prop[1];
-                        if (sw.equals("0\uffa1")) { // buggy fw on ting smart ...
-                            System.err.printf("Found wrong sw: %s \n", sw);
-                            sw0 = 0;
-                            sw1= 0;
-                            sw2 = 1;
-                            sw3 = 965;
-                        } else {
+                        try {
                             int start = 0;
                             int end = sw.indexOf('.');
                             sw0 = Integer.parseInt(sw.substring(start, end));
@@ -287,6 +288,12 @@ public class TingConfig {
                             sw2 = Integer.parseInt(sw.substring(start, end));
                             start = end + 1;
                             sw3 = Integer.parseInt(sw.substring(start));
+                        } catch (StringIndexOutOfBoundsException | NumberFormatException ex) {
+                            LOG.log(Level.SEVERE, "Found wrong sw: {0}", sw);
+                            sw0 = 0;
+                            sw1 = 0;
+                            sw2 = 1;
+                            sw3 = 965;
                         }
                         break;
                     case "tbd":
@@ -817,8 +824,8 @@ public class TingConfig {
 
     public Collection<Book> getLatestBooksFromBackup() {
         List<Book> result = new ArrayList();
-        Pattern bookIdPattern = Pattern.compile("\\d\\d\\d\\d\\d");
-        Pattern bookVersionPattern = Pattern.compile("\\d\\d\\d");
+        Pattern bookIdPattern = Pattern.compile("[0-9]{5}");
+        Pattern bookVersionPattern = Pattern.compile("[0-9]{3,4}");
 
         for (File bookDir : tingBackupDir.listFiles()) {
             if (bookDir.isDirectory() && bookIdPattern.matcher(bookDir.getName()).matches()) {

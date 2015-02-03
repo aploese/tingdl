@@ -136,7 +136,7 @@ public class SaveToFileResponseHandler implements ResponseHandler<Long> {
         sb.append(' ');
     }
     
-    sb.append(String.format("] %.3f MB\t %.2fK/s\t ETA %d:%02d:%02d", flMB, kB_s , eta_h, eta_m, eta_s));
+    sb.append(String.format("] %.3f MB\t %.2f kB/s\t ETA %d:%02d:%02d", flMB, kB_s , eta_h, eta_m, eta_s));
     System.out.print(sb);
   }
 
@@ -167,6 +167,9 @@ public class SaveToFileResponseHandler implements ResponseHandler<Long> {
      * 2xx status code). If no response body exists, this returns null. If the
      * response was unsuccessful (>= 300 status code), throws an
      * {@link HttpResponseException}.
+     * @param response
+     * @return the file length
+     * @throws org.apache.http.client.HttpResponseException
      */
    @Override
     public Long handleResponse(final HttpResponse response)
