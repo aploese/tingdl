@@ -3,17 +3,17 @@ Section: java
 Priority: optional
 Maintainer: Debian Java Maintainers <pkg-java-maintainers@lists.alioth.debian.org>
 Uploaders: Arne Plöse <aploese@gmx.de>
-Build-Depends: debhelper (>= 7), cdbs, default-jdk, maven-debian-helper (>= 1.5)
-Build-Depends-Indep: libcommons-cli-java, libhttpclient-java, libslf4j-java 
-Standards-Version: 3.9.2
-Vcs-Svn: svn://svn.debian.org/svn/pkg-java/trunk/ting-dl
-Vcs-Browser: http://svn.debian.org/wsvn/pkg-java/trunk/ting-dl
-Homepage: http://sourceforge.net/projects/tingdl 
+Build-Depends: debhelper (>= 9), cdbs, default-jdk, maven-debian-helper (>= 1.5)
+Build-Depends-Indep: libcommons-cli-java, libhttpclient-java 
+Standards-Version: 3.9.6
+Vcs-Git: git://anonscm.debian.org/pkg-java/ting-dl.git
+Vcs-Browser: https://anonscm.debian.org/cgit/pkg-java/ting-dl.git
+Homepage: http://sourceforge.net/projects/tingdl
 
 Package: ting-dl
 Architecture: all
 Depends: ${misc:Depends}, ${maven:Depends}
-Recommends: ${maven:OptionalDepends}
+Suggests: ${maven:OptionalDepends}
 Description: ting-dl
- Downloader for TING
+ Book downloader for the TING pen.
 

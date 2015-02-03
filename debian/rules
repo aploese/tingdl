@@ -6,4 +6,4 @@ include /usr/share/cdbs/1/class/maven.mk
 JAVA_HOME := /usr/lib/jvm/default-java
 
 get-orig-source:
-	uscan --download-version $(DEB_UPSTREAM_VERSION) --force-download --rename
+	uscan --download-current-version --force-download --no-symlink

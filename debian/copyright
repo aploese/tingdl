@@ -1,17 +1,17 @@
-Format: http://dep.debian.net/deps/dep5/
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: ting-dl
 Source: http://sourceforge.net/projects/tingdl
 
 Files: *
-Copyright: 2013, Arne Plöse
+Copyright: 2015, Arne Plöse
 License: GPL-3
 
 Files: debian/*
-Copyright: 2013, Arne Plöse <aploese@gmx.de>
+Copyright: 2015, Arne Plöse <aploese@gmx.de>
 License: GPL-3
 
 License: GPL-3
-  On Debian GNU/Linux system you can find the complete text of the
-  GPL-3 license in '/usr/share/common-licenses/GPL-3'
+ On Debian systems, the full text of the GPL-3 license
+ can be found in the file '/usr/share/common-licenses/GPL-3'
 
 
