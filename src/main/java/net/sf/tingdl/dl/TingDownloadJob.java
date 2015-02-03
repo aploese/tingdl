@@ -36,10 +36,10 @@ import net.sf.tingdl.config.Book;
  */
 public class TingDownloadJob {
 
-    private static Logger LOG = Logger.getLogger(TingDownloadJob.class.getName());
+    private static final Logger LOG = Logger.getLogger(TingDownloadJob.class.getName());
     private Book book;
-    private Set<DestinationType> destinationTypes = EnumSet.noneOf(DestinationType.class);
-    private Set<DestinationType> destinationUpdated = EnumSet.noneOf(DestinationType.class);
+    private final Set<DestinationType> destinationTypes = EnumSet.noneOf(DestinationType.class);
+    private final Set<DestinationType> destinationUpdated = EnumSet.noneOf(DestinationType.class);
 
     public int getBookId() {
         return book.getId();
@@ -147,6 +147,8 @@ public class TingDownloadJob {
     }
 
     public static int copyFile(File src, File dest, int bufferSize) throws IOException {
+        ProgressIndicator pg = new ProgressIndicator(src.length());
+        pg.printSaveFile(src.getAbsolutePath());
         try (InputStream is = new FileInputStream(src)) {
             byte[] data = new byte[bufferSize];
             int fileLength = 0;
@@ -154,10 +156,14 @@ public class TingDownloadJob {
             try (FileOutputStream os = new FileOutputStream(dest)) {
                 int length = 0;
                 while ((length = is.read(data)) > -1) {
+                    pg.updateProgress(fileLength);
                     os.write(data, 0, length);
+                    os.flush(); // Flush here to give better progress
                     fileLength += length;
                 }
+                System.out.println("\nFlush data to file " + dest.getAbsolutePath());
             }
+            System.out.println("file " + dest.getAbsolutePath() +  " flushed");
             return fileLength;
         }
     }

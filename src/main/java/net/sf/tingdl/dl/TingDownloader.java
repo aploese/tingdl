@@ -32,12 +32,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.sf.tingdl.config.Book;
 import net.sf.tingdl.config.TingConfig;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 
 /**
  *
@@ -54,7 +54,7 @@ public class TingDownloader {
     public static String ARCHIVE_PATH_TEMPLATE = "/book-files/get/id/%s/area/%s/type/archive/sn/%d/";
     public static String CDFS_PATH_TEMPLATE = "/cdfs.php?action=version&OS=%s&fw=%sd&ting=%d&sn=%d";
     public static String FW_PATH_TEMPLATE = "/fw.php?action=version&OS=%s&fw=%s&ting=%d&sn=%d";
-    private HttpClient httpclient;
+    private CloseableHttpClient httpclient;
     private final HttpGet httpGet;
     private InetAddress address;
     private long serialNumber;
@@ -62,7 +62,8 @@ public class TingDownloader {
     
     public TingDownloader(TingConfig tc) {
         this.tingConfig = tc;
-        httpclient = new DefaultHttpClient();
+        HttpClientBuilder httpClientBuilder = HttpClientBuilder.create();
+        httpclient = httpClientBuilder.build();
         httpGet = new HttpGet();
         initServerIp();
     }
