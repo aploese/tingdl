@@ -45,8 +45,11 @@ public class ProgressIndicator {
         for (int i = drawPercent; i < width; i++) {
             sb.append(' ');
         }
-
-        sb.append(String.format("] %.3f MB\t %.2f kB/s\t ETA %d:%02d:%02d", flMB, kB_s, eta_h, eta_m, eta_s));
+        if (eta_h > 99) {
+            sb.append(String.format("]%8.3f MB %8.2f kB/s ETA>99:59:59", flMB, kB_s));
+        } else {
+            sb.append(String.format("]%8.3f MB %8.2f kB/s ETA %02d:%02d:%02d", flMB, kB_s, eta_h , eta_m, eta_s));
+        }
         System.out.print(sb);
     }
 

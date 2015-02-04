@@ -156,10 +156,10 @@ public class TingDownloadJob {
             try (FileOutputStream os = new FileOutputStream(dest)) {
                 int length = 0;
                 while ((length = is.read(data)) > -1) {
-                    pg.updateProgress(fileLength);
                     os.write(data, 0, length);
                     os.flush(); // Flush here to give better progress
                     fileLength += length;
+                    pg.updateProgress(fileLength);
                 }
                 System.out.println("\nFlush data to file " + dest.getAbsolutePath());
             }

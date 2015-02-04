@@ -92,7 +92,7 @@ public class Main {
     private static final String CMDL_OPT_CHECK_TING = "check-ting";
     private static final String CMDL_OPT_CHECK_BACKUP = "check-backup";
     private static final String CMDL_OPT_CHECK_VERSIONS = "check-versions";
-    private static Logger LOG_ROTATING = Logger.getLogger("TING");
+    private static final Logger LOG_ROTATING = Logger.getLogger("TING");
 
     private final UdiskctlWrapper udiskctlWrapper;
     private final TingConfig tingConfig;
