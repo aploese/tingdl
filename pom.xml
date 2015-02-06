@@ -79,8 +79,8 @@
     </mailingLists>
     -->
     <scm>
-        <developerConnection>scm:git:ssh://git.code.sf.net/p/tingdl/code tingdl-code</developerConnection>
-        <connection>scm:git://git.code.sf.net/p/tingdl/code tingdl-code</connection>
+        <developerConnection>scm:git:ssh://git.code.sf.net/p/tingdl/code</developerConnection>
+        <connection>scm:git://git.code.sf.net/p/tingdl/code</connection>
         <url>http://sourceforge.net/p/tingdl/code/</url>
         <tag>HEAD</tag>
     </scm>
