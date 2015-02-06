@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.sf.ting-dl</groupId>
     <artifactId>ting-dl</artifactId>
-    <version>0.8.9-SNAPSHOT</version>
+    <version>0.8.9</version>
     <packaging>jar</packaging>
 	
     <name>ting-dl</name>
@@ -82,7 +82,7 @@
         <developerConnection>scm:git:ssh://git.code.sf.net/p/tingdl/code</developerConnection>
         <connection>scm:git://git.code.sf.net/p/tingdl/code</connection>
         <url>http://sourceforge.net/p/tingdl/code/</url>
-        <tag>HEAD</tag>
+        <tag>ting-dl-0.8.9</tag>
     </scm>
 
     
